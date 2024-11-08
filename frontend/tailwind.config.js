@@ -27,6 +27,7 @@ export default {
       fontFamily: {
         inter: ["'Inter'", "sans-serif"],
         gelasio: ["'Gelasio'", "serif"],
+        faculty: ["'Faculty Glyphic'", "sans-serif"],
       },
     },
   },

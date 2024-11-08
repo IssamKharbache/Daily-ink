@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Gelasio&family=Inter:wght@400;500&display=swap");
 @import "@flaticon/flaticon-uicons/css/all/all";
+@import url("https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +8,7 @@
 
 @layer components {
   * {
-    @apply m-0 p-0 box-border text-base outline-purple/30 duration-100;
+    @apply m-0 p-0 box-border text-base outline-purple/30 duration-100 font-faculty;
   }
 
   html {
@@ -47,15 +48,15 @@
   }
 
   .btn-dark {
-    @apply whitespace-nowrap bg-black text-white rounded-full py-3 px-6 text-xl capitalize hover:bg-opacity-80;
+    @apply whitespace-nowrap bg-black text-white rounded-full py-3 px-6 text-xl capitalize hover:bg-opacity-80 duration-300;
   }
 
   .btn-light {
-    @apply btn-dark bg-grey text-black;
+    @apply btn-dark bg-grey text-black duration-300;
   }
 
   .input-box {
-    @apply w-[100%] rounded-md p-4 bg-grey pl-12 border border-grey focus:bg-transparent placeholder:text-black;
+    @apply w-[100%] rounded-md p-4 bg-grey pl-7 border border-grey focus:bg-transparent placeholder:text-black/60;
   }
 
   input:disabled,
@@ -68,7 +69,7 @@
   }
 
   .link {
-    @apply text-dark-grey hover:text-black hover:bg-grey p-3 px-4 block opacity-75;
+    @apply text-dark-grey hover:text-black hover:bg-grey p-3 px-4 block opacity-75 rounded-full;
   }
 
   .hide {
