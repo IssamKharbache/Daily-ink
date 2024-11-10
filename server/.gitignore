@@ -15,3 +15,6 @@ yarn-error.log
 
 # Environment files
 .env
+
+firebaseadmin.json
+firebaseadmin.base64

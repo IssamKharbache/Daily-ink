@@ -3,11 +3,20 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { authRoute } from "./routes/authRoutes.js";
 import cors from "cors";
+import admin from "firebase-admin";
 //initializing modules
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+//
+const serviceAccount = JSON.parse(
+  Buffer.from(process.env.FIREBASE_ADMIN, "base64").toString("utf-8")
+);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 //connect to db
 mongoose
   .connect(process.env.MONGODB_URI, {

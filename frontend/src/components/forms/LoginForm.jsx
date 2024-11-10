@@ -71,7 +71,7 @@ const LoginForm = () => {
         authenticatingUser(serverRoute, formData, setUserAuth);
       })
       .catch((error) => {
-        toast.error("Something went wrong , try again later");
+        setError("Something went wrong  , try again later");
         return console.log(error);
       });
   };
