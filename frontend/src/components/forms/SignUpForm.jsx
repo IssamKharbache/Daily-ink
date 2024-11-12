@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useEffect, useState } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { signUpSchema } from "../../../libs/validation";
 import { authenticatingUser } from "../../../libs/authenticatingUser";
 import AnimationWrapper from "../../common/page-animation";
@@ -74,7 +74,6 @@ const SignUpForm = () => {
     <Navigate to="/" />
   ) : (
     <AnimationWrapper keyValue="signup">
-      <Toaster richColors position="top-center" />
       <section className="h-cover flex items-center justify-center ">
         <form
           noValidate

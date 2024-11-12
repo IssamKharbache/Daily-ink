@@ -7,7 +7,7 @@ import AnimationWrapper from "../../common/page-animation";
 import LoadingButton from "../loading-button.component";
 import { FcGoogle } from "react-icons/fc";
 import { Link, Navigate, redirect } from "react-router-dom";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { UserContext } from "../../context/UserContext";
 import { signInWithGoogle } from "../../common/firebase";
 
@@ -80,7 +80,6 @@ const LoginForm = () => {
     <Navigate to="/" />
   ) : (
     <AnimationWrapper keyValue="login">
-      <Toaster richColors position="top-center" />
       <section className="h-cover flex items-center justify-center ">
         <form
           noValidate

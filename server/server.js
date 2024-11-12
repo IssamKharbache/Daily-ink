@@ -4,6 +4,9 @@ import mongoose from "mongoose";
 import { authRoute } from "./routes/authRoutes.js";
 import cors from "cors";
 import admin from "firebase-admin";
+import cloudinary from "./cloudinary.js";
+import { uploadRoute } from "./routes/uploadRoutes.js";
+
 //initializing modules
 dotenv.config();
 const app = express();
@@ -29,6 +32,7 @@ let PORT = process.env.PORT || 3000;
 
 //authentification routes
 app.use("/api/auth", authRoute);
+app.use("/api/images", uploadRoute);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
