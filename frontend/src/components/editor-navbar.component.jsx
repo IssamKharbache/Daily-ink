@@ -4,14 +4,16 @@ import logo from "../imgs/dailylogo.png";
 import { EditorContext } from "../context/EditorContext";
 
 const EditorNavbar = () => {
-  const { editorTitle } = useContext(EditorContext);
+  const {
+    blog: { title },
+  } = useContext(EditorContext);
   return (
     <nav className="navbar justify-normal">
       <Link to="/" className="flex-none w-28  object-contain">
         <img src={logo} className="w-full" alt="logo" />
       </Link>
       <p className="max-md:hidden text-black line-clamp-1  w-full capitalize">
-        {editorTitle}
+        {title}
       </p>
       {/* buttons */}
       <div className="flex gap-4 ml-auto items-center ">

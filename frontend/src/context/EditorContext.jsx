@@ -3,12 +3,26 @@ import { createContext, useState } from "react";
 export const EditorContext = createContext({});
 
 const EditorContextProvider = ({ children }) => {
-  const [editorTitle, setEditorTitle] = useState("new blog");
+  const blogStructure = {
+    title: "new blog",
+    banner: "",
+    content: "",
+    tags: [],
+    description: "",
+    author: {
+      personal_info: {},
+    },
+  };
+  const [blog, setBlog] = useState(blogStructure);
+  const [editor, setEditor] = useState("editor");
+
   return (
     <EditorContext.Provider
       value={{
-        editorTitle,
-        setEditorTitle,
+        blog,
+        setBlog,
+        editor,
+        setEditor,
       }}
     >
       {children}

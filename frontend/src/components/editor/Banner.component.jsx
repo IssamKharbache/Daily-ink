@@ -11,6 +11,8 @@ const Banner = ({
   previewBannerFile,
   setPreviewBannerFile,
   setisBannerLoading,
+  blog,
+  setBlog,
 }) => {
   // Handle image preview
   const previewBanner = (file) => {
@@ -44,6 +46,7 @@ const Banner = ({
     });
     setisBannerLoading(false);
     setBanner(url);
+    setBlog({ ...blog, banner: url });
   };
   return (
     <div
