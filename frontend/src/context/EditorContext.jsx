@@ -9,9 +9,6 @@ const EditorContextProvider = ({ children }) => {
     content: "",
     tags: [],
     description: "",
-    author: {
-      personal_info: {},
-    },
   };
   const [blog, setBlog] = useState(blogStructure);
   const [editor, setEditor] = useState("editor");
