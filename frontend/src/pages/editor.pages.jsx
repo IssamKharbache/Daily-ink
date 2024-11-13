@@ -10,14 +10,10 @@ const EditorPage = () => {
     userAuth: { access_token },
   } = useContext(UserContext);
 
-  const [editorState, setEditorState] = useState("editor");
+  const { editor } = useContext(EditorContext);
   if (access_token === null) {
     return <Navigate to="/sign-in" />;
   }
-  return (
-    <EditorContextProvider>
-      {editorState == "editor" ? <BlogEditor /> : <PublishForm />}
-    </EditorContextProvider>
-  );
+  return editor == "editor" ? <BlogEditor /> : <PublishForm />;
 };
 export default EditorPage;

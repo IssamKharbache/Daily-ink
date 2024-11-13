@@ -1,23 +1,36 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import EditorNavbar from "../editor-navbar.component";
 import AnimationWrapper from "../../common/page-animation";
-
 import Banner from "./Banner.component";
 import { EditorContext } from "../../context/EditorContext";
+import EditorJs from "@editorjs/editorjs";
+import { tools } from "../tools.component";
 const BlogEditor = ({ type }) => {
-  //blog stuff
+  //blog context
   const {
     blog,
     blog: { title, banner: bannerContext, content, tags, description },
     setBlog,
+    textEditor,
+    setTextEditor,
   } = useContext(EditorContext);
 
   //state to handle banner
   const [banner, setBanner] = useState(null);
   const [isBannerLoading, setisBannerLoading] = useState(false);
   const [previewBannerFile, setPreviewBannerFile] = useState(null);
-  //context to handle title
-  const { setEditorTitle } = useContext(EditorContext);
+  //
+  //create editor
+  useEffect(() => {
+    setTextEditor(
+      new EditorJs({
+        holderId: "textEditor",
+        data: "",
+        placeholder: "Write your blog here...",
+        tools: tools,
+      })
+    );
+  }, []);
   //text area stuff
   const handleTitleKeyDown = (e) => {
     if (e.keyCode === 13) {
@@ -57,6 +70,7 @@ const BlogEditor = ({ type }) => {
               onChange={handleTitleChange}
             ></textarea>
             <hr className="w-full my-5 opacity-10" />
+            <div className="font-gelasio" id="textEditor"></div>
           </div>
         </section>
       </AnimationWrapper>

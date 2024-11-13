@@ -15,6 +15,7 @@ const EditorContextProvider = ({ children }) => {
   };
   const [blog, setBlog] = useState(blogStructure);
   const [editor, setEditor] = useState("editor");
+  const [textEditor, setTextEditor] = useState({ isReady: false });
 
   return (
     <EditorContext.Provider
@@ -23,6 +24,8 @@ const EditorContextProvider = ({ children }) => {
         setBlog,
         editor,
         setEditor,
+        textEditor,
+        setTextEditor,
       }}
     >
       {children}

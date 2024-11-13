@@ -2,11 +2,44 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import logo from "../imgs/dailylogo.png";
 import { EditorContext } from "../context/EditorContext";
+import { toast } from "sonner";
 
 const EditorNavbar = () => {
   const {
-    blog: { title },
+    blog: { title, banner },
+    blog,
+    setBlog,
+    setEditor,
+    textEditor,
   } = useContext(EditorContext);
+
+  const handlePublish = () => {
+    if (!banner.length) {
+      return toast.error("Please upload a blog banner first", {
+        style: { padding: "20px" },
+      });
+    }
+    if (!title.length) {
+      return toast.error("Please enter a title for your blog first", {
+        style: { padding: "20px" },
+      });
+    }
+    if (textEditor.isReady) {
+      textEditor
+        .save()
+        .then((data) => {
+          if (data.blocks.length) {
+            setBlog({ ...blog, content: data });
+            setEditor("publish");
+          } else {
+            toast.error("Make sure you write something first", {
+              style: { padding: "20px" },
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
   return (
     <nav className="navbar justify-normal">
       <Link to="/" className="flex-none w-28  object-contain">
@@ -17,7 +50,9 @@ const EditorNavbar = () => {
       </p>
       {/* buttons */}
       <div className="flex gap-4 ml-auto items-center ">
-        <button className="btn-dark py-3">Publish</button>
+        <button className="btn-dark py-3" onClick={handlePublish}>
+          Publish
+        </button>
         <button className="btn-dark-border py-2">Save draft</button>
       </div>
     </nav>
