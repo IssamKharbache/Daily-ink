@@ -14,11 +14,11 @@ const EditorNavbar = () => {
   } = useContext(EditorContext);
 
   const handlePublish = () => {
-    if (!banner.length) {
-      return toast.error("Please upload a blog banner first", {
-        style: { padding: "20px" },
-      });
-    }
+    // if (!banner.length) {
+    //   return toast.error("Please upload a blog banner first", {
+    //     style: { padding: "20px" },
+    //   });
+    // }
     if (!title.length) {
       return toast.error("Please enter a title for your blog first", {
         style: { padding: "20px" },

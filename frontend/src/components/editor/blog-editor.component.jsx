@@ -11,7 +11,6 @@ const BlogEditor = ({ type }) => {
     blog,
     blog: { title, banner: bannerContext, content, tags, description },
     setBlog,
-    textEditor,
     setTextEditor,
   } = useContext(EditorContext);
 
@@ -25,7 +24,7 @@ const BlogEditor = ({ type }) => {
     setTextEditor(
       new EditorJs({
         holderId: "textEditor",
-        data: "",
+        data: content,
         placeholder: "Write your blog here...",
         tools: tools,
       })
@@ -59,15 +58,16 @@ const BlogEditor = ({ type }) => {
               previewBannerFile={previewBannerFile}
               setPreviewBannerFile={setPreviewBannerFile}
               setisBannerLoading={setisBannerLoading}
-              banner={banner}
+              banner={banner || bannerContext}
               setBanner={setBanner}
             />
             {/* editor */}
             <textarea
               placeholder="Blog Title"
-              className="text-4xl font-medium w-full h-20 outline-none resize-none capitalize mt-10 leading-tight placeholder:opacity-40"
+              className="text-4xl font-medium w-full h-24 outline-none resize-none capitalize mt-10 leading-tight placeholder:opacity-40"
               onKeyDown={handleTitleKeyDown}
               onChange={handleTitleChange}
+              defaultValue={title}
             ></textarea>
             <hr className="w-full my-5 opacity-10" />
             <div className="font-gelasio" id="textEditor"></div>

@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import PublishForm from "../components/publish-form.component";
 import BlogEditor from "../components/editor/blog-editor.component";
-import EditorContextProvider, { EditorContext } from "../context/EditorContext";
+import { EditorContext } from "../context/EditorContext";
 
 const EditorPage = () => {
   const {

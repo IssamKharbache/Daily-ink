@@ -44,8 +44,8 @@ export const tools = {
     class: Header,
     config: {
       placeholder: "Type heading...",
-      levels: [, 1, 2, 3],
-      defaultLevel: 2,
+      levels: [1, 2, 3],
+      defaultLevel: 1,
     },
   },
   list: {

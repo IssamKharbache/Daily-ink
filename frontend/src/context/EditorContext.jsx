@@ -4,7 +4,7 @@ export const EditorContext = createContext({});
 
 const EditorContextProvider = ({ children }) => {
   const blogStructure = {
-    title: "new blog",
+    title: "",
     banner: "",
     content: "",
     tags: [],
