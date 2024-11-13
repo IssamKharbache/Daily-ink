@@ -69,7 +69,7 @@ const PublishForm = () => {
         <div className="border-dark-grey/10 lg:border-[2px] lg:p-8 rounded">
           <p className="text-dark-grey mb-2 mt-9">Blog Title</p>
           <input
-            maxLength={100}
+            maxLength={150}
             type="text"
             className="input-box input pl-4 placeholder:text-black/40"
             placeholder="Blog title..."

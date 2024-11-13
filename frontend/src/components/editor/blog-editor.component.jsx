@@ -63,6 +63,7 @@ const BlogEditor = ({ type }) => {
             />
             {/* editor */}
             <textarea
+              maxLength={150}
               placeholder="Blog Title"
               className="text-4xl font-medium w-full h-24 outline-none resize-none capitalize mt-10 leading-tight placeholder:opacity-40"
               onKeyDown={handleTitleKeyDown}

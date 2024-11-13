@@ -36,7 +36,7 @@ const Tag = ({ tag, tagIndex }) => {
       <div className="flex items-center justify-between  gap-5">
         <p
           onKeyDown={handleTagEdit}
-          className="capitalize outline-none text-xl"
+          className="outline-none text-xl"
           onClick={addEditable}
         >
           {tag}
