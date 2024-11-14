@@ -122,6 +122,7 @@ const PublishForm = () => {
         setTimeout(() => {
           navigate("/");
         }, 500);
+        setBlog({});
       }
     } catch (error) {
       setLoading(false);

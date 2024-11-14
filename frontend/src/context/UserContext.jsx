@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { lookInSession } from "../common/session";
+import { lookInLocalStorage } from "../common/session";
 
 export const UserContext = createContext();
 
@@ -7,9 +7,9 @@ const UserContextProvider = ({ children }) => {
   const [userAuth, setUserAuth] = useState({});
 
   useEffect(() => {
-    let userInSession = lookInSession("user");
-    if (userInSession) {
-      setUserAuth(JSON.parse(userInSession));
+    let userInStorage = lookInLocalStorage("user");
+    if (userInStorage) {
+      setUserAuth(JSON.parse(userInStorage));
     } else {
       setUserAuth({ access_token: null });
     }

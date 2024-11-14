@@ -1,5 +1,5 @@
 import axios from "axios";
-import { storeInSession } from "../src/common/session";
+import { storeInLocalStorage } from "../src/common/session";
 
 export const authenticatingUser = async (route, formData, setUserAuth) => {
   try {
@@ -13,7 +13,7 @@ export const authenticatingUser = async (route, formData, setUserAuth) => {
     const userData = res.data;
 
     // Store user data in session
-    storeInSession("user", JSON.stringify(userData));
+    storeInLocalStorage("user", JSON.stringify(userData));
 
     // Set the user authentication context
     setUserAuth(userData);

@@ -11,6 +11,7 @@ const BlogEditor = ({ type }) => {
     blog,
     blog: { title, banner: bannerContext, content, tags, description },
     setBlog,
+    textEditor,
     setTextEditor,
   } = useContext(EditorContext);
 
@@ -21,14 +22,16 @@ const BlogEditor = ({ type }) => {
   //
   //create editor
   useEffect(() => {
-    setTextEditor(
-      new EditorJs({
-        holderId: "textEditor",
-        data: content,
-        placeholder: "Write your blog here...",
-        tools: tools,
-      })
-    );
+    if (!textEditor.isReady) {
+      setTextEditor(
+        new EditorJs({
+          holderId: "textEditor",
+          data: content,
+          placeholder: "Write your blog here...",
+          tools: tools,
+        })
+      );
+    }
   }, []);
   //text area stuff
   const handleTitleKeyDown = (e) => {

@@ -2,12 +2,14 @@ import logo from "../imgs/dailylogo.png";
 import { Link, Outlet } from "react-router-dom";
 import SearchBar from "./seach-bar.component";
 import { useContext, useState } from "react";
-import { UserContext } from "../context/UserContext";
+
 import UserDropDown from "./user-navigation.component";
+import { UserContext } from "../context/UserContext";
 const Navbar = () => {
   const {
     userAuth: { access_token, profile_img },
   } = useContext(UserContext);
+
   //dropdown state
 
   const [showDropDown, setShowDropDown] = useState(false);

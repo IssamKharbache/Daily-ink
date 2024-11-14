@@ -1,16 +1,16 @@
-//store in session storage function
-const storeInSession = (key, value) => {
-  return sessionStorage.setItem(key, value);
+// Store in localStorage function (for persistence across sessions)
+const storeInLocalStorage = (key, value) => {
+  return localStorage.setItem(key, value);
 };
 
-//get from session storage function
-const lookInSession = (key) => {
-  return sessionStorage.getItem(key);
+// Get from localStorage function
+const lookInLocalStorage = (key) => {
+  return localStorage.getItem(key);
 };
 
-//delete from session storage function
-const deleteFromSession = (key) => {
-  return sessionStorage.removeItem(key);
+// Delete from localStorage function
+const deleteFromLocalStorage = (key) => {
+  return localStorage.removeItem(key);
 };
 
-export { storeInSession, lookInSession, deleteFromSession };
+export { storeInLocalStorage, lookInLocalStorage, deleteFromLocalStorage };

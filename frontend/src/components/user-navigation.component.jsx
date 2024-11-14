@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import AnimationWrapper from "../common/page-animation";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import { deleteFromSession } from "../common/session";
+import { deleteFromLocalStorage } from "../common/session";
 
 const UserDropDown = () => {
   const {
@@ -11,7 +11,7 @@ const UserDropDown = () => {
   } = useContext(UserContext);
 
   const signOut = () => {
-    deleteFromSession("user");
+    deleteFromLocalStorage("user");
     setUserAuth({ access_token: null });
   };
   return (
@@ -52,15 +52,15 @@ const UserDropDown = () => {
         <button
           onClick={signOut}
           type="button"
-          className="link pl-8 py-4 rounded-none w-full bg-slate/50 hover:bg-slate/80"
+          className="flex items-center gap-4 link pl-8 py-4 rounded-none w-full bg-slate/50 hover:bg-slate/80 "
         >
-          <div className="flex items-center  gap-2 ">
-            <i className="fi fi-rr-exit"></i>
-            <span>Logout</span>
+          <i className="fi fi-rr-exit"></i>
+          <div className="flex flex-col justify-start  ">
+            <span className="text-start">Logout</span>
+            <p className="text-md font-bold text-dark-grey break-words line-clamp-1">
+              @issam kharbache
+            </p>
           </div>
-          <p className="text-md font-bold text-dark-grey break-words line-clamp-1">
-            @{username}
-          </p>
         </button>
       </div>
     </AnimationWrapper>

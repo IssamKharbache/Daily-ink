@@ -1,11 +1,16 @@
 import React from "react";
 
-const LoadingButton = ({ text }) => {
+const LoadingButton = ({ text, className, spinnerColor }) => {
   return (
-    <button className="btn-dark w-full center mt-14 flex items-center justify-center gap-3 opacity-70 pointer-events-none">
+    <button
+      className={`${
+        className ||
+        "btn-dark w-full center mt-14 flex items-center justify-center gap-3 opacity-70 pointer-events-none"
+      }`}
+    >
       {text}
       <svg
-        className="animate-spin h-5 w-5 text-white"
+        className={`animate-spin h-5 w-5 ${spinnerColor || "text-white"}`}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
