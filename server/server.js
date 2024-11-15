@@ -12,11 +12,17 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
-
 //
+const firebaseAdminKey = process.env.FIREBASE_ADMIN;
+if (!firebaseAdminKey) {
+  console.error("FIREBASE_ADMIN environment variable is not set.");
+  process.exit(1);
+}
+
 const serviceAccount = JSON.parse(
   Buffer.from(process.env.FIREBASE_ADMIN, "base64").toString("utf-8")
 );
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
