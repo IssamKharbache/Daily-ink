@@ -94,7 +94,6 @@ const PublishForm = () => {
     try {
       setBackendError("");
       setLoading(true);
-
       const blogData = {
         title,
         content,
@@ -122,7 +121,13 @@ const PublishForm = () => {
         setTimeout(() => {
           navigate("/");
         }, 500);
-        setBlog({});
+        setBlog({
+          title: "",
+          banner: "",
+          content: "",
+          tags: [],
+          description: "",
+        });
       }
     } catch (error) {
       setLoading(false);

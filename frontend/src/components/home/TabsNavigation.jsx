@@ -10,10 +10,10 @@ const TabsNavigation = ({
   return (
     <>
       <div className="relative mb-8 border-b bg-white border-grey flex flex-nowrap overflow-x-auto">
-        <ul class="flex flex-wrap">
+        <ul className="flex flex-wrap">
           {routes.map((route, i) => {
             return (
-              <div key={i} class="me-2">
+              <div key={i} className="me-2">
                 <button
                   onClick={() => setActiveTab(i)}
                   href="#"

@@ -2,6 +2,7 @@ import Blog from "../Schema/Blog.js";
 import User from "../Schema/User.js";
 import { nanoid } from "nanoid";
 
+//create blog route
 export const createBlog = async (req, res) => {
   const userAuthId = req.user;
   const {
@@ -74,5 +75,25 @@ export const createBlog = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internale error" });
+  }
+};
+// get blogs route
+export const getLatestBlogs = async (req, res) => {
+  let maxBlogs = 6;
+  try {
+    const allBlogs = await Blog.find({ draft: false })
+      .populate(
+        "author",
+        "personal_info.profile_img personal_info.fullname personal_info.username -_id"
+      )
+      .sort({ publishedAt: -1 })
+      .select(
+        "title banner description author blog_id tags activity publishedAt -_id"
+      )
+      .limit(maxBlogs);
+    return res.status(200).json({ allBlogs });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internale server error" });
   }
 };
