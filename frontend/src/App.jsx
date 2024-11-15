@@ -6,6 +6,7 @@ import UserContextProvider from "./context/UserContext";
 import EditorPage from "./pages/editor.pages";
 import { Toaster } from "sonner";
 import EditorContextProvider from "./context/EditorContext";
+import HomePage from "./pages/home.page";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Routes>
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/" element={<NavBar />}>
+            <Route index element={<HomePage />} />
             <Route path="/sign-in" element={<LoginPage />} />
             <Route path="/sign-up" element={<SignupPage />} />
           </Route>
