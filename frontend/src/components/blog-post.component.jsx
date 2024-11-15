@@ -20,7 +20,7 @@ const BlogPost = ({ content, author }) => {
       to={`/blogs/${id}`}
       className="flex gap-8 items-center hover:bg-grey/30 border-b-2 border-grey group "
     >
-      <div className="h-56 object-contain aspect-square bg-grey">
+      <div className="h-56 object-contain aspect-square bg-grey hidden md:block">
         <img
           src={banner}
           alt="blog-banner"
@@ -28,7 +28,7 @@ const BlogPost = ({ content, author }) => {
         />
       </div>
       <div className="w-full  p-4   gap-4  ">
-        <h1 className="text-3xl md:text-4xl my-3 capitalize font-bold  ">
+        <h1 className="text-2xl md:text-4xl my-3 capitalize font-bold ">
           {title}
         </h1>
         <p className="my-3 text-xl font-gelasio leading-7 max-sm:hidden md:max-[1100px]:hidden line-clamp-2">
@@ -48,7 +48,7 @@ const BlogPost = ({ content, author }) => {
           <img
             src={profile_img}
             alt="blog-banner"
-            className="object-cover w-6 h-6 rounded-full "
+            className="object-cover w-6 h-6 rounded-full"
           />
           <p className="line-clamp-1 capitalize font-bold text-xl ">
             {fullname}
