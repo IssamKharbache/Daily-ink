@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { formatToDate } from "../../libs/utils/utils";
 import { HeartIcon } from "lucide-react";
 
-const NoBannerBlogPost = ({ blog, index }) => {
+const NoBannerBlogPost = ({ blog, index, className }) => {
   const {
     title,
     blog_id: id,
@@ -15,7 +15,9 @@ const NoBannerBlogPost = ({ blog, index }) => {
   return (
     <Link
       to={`/blogs/${id}`}
-      className="flex gap-5  items-center border-b-2 border-grey group hover:bg-grey/30 "
+      className={`flex gap-5  items-center border-b-2 border-grey group hover:bg-grey/30 ${
+        className ?? ""
+      } `}
     >
       <h1 className="blog-index ">{index < 6 ? "0" + (index + 1) : index}</h1>
       <div className="w-full  p-4   gap-4  ">

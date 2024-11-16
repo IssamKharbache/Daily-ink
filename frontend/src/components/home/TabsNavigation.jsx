@@ -7,6 +7,7 @@ const TabsNavigation = ({
   children,
 }) => {
   const [activeTab, setActiveTab] = useState(defaultIndex);
+
   return (
     <>
       <div className="relative mb-8 border-b bg-white border-grey flex flex-nowrap overflow-x-auto">

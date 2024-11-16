@@ -120,3 +120,31 @@ export const getPopularBlogs = async (req, res) => {
     return res.status(500).json({ error: "Internale server error" });
   }
 };
+
+export const getBlogByCategory = async (req, res) => {
+  const { category } = req.body;
+  console.log(category);
+
+  const findQuery = {
+    tags: category,
+    draft: false,
+  };
+  const maxBlogs = 6;
+  try {
+    const filteredBlogs = await Blog.find(findQuery)
+      .populate(
+        "author",
+        "personal_info.profile_img personal_info.fullname personal_info.username -_id"
+      )
+      .sort({ publishedAt: -1 })
+      .select(
+        "title banner description author blog_id tags activity publishedAt -_id"
+      )
+      .limit(maxBlogs);
+
+    return res.status(200).json({ filteredBlogs });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internale server error" });
+  }
+};
