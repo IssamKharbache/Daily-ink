@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatToDate } from "../../libs/utils/utils";
-import { HeartIcon } from "lucide-react";
 
 const NoBannerBlogPost = ({ blog, index, className }) => {
   const {
@@ -19,7 +18,7 @@ const NoBannerBlogPost = ({ blog, index, className }) => {
         className ?? ""
       } `}
     >
-      <h1 className="blog-index ">{index < 6 ? "0" + (index + 1) : index}</h1>
+      <h1 className="blog-index">{index < 5 ? "0" + (index + 1) : index}</h1>
       <div className="w-full  p-4   gap-4  ">
         <h1 className="text-3xl md:text-4xl my-3 capitalize font-bold  ">
           {title}

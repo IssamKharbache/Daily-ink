@@ -4,13 +4,15 @@ import {
   getBlogByCategory,
   getLatestBlogs,
   getPopularBlogs,
+  latestBlogsCount,
 } from "../controllers/blogControllers.js";
 import { verifyJWT } from "../middlewares/verifyJWT.js";
 const router = express.Router();
 
 router.post("/create", verifyJWT, createBlog);
 router.post("/search", getBlogByCategory);
-router.get("/latest", getLatestBlogs);
+router.post("/latest", getLatestBlogs);
 router.get("/popular", getPopularBlogs);
+router.post("/all-latest-blogs-count", latestBlogsCount);
 
 export { router as blogRoutes };

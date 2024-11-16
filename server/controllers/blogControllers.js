@@ -79,7 +79,8 @@ export const createBlog = async (req, res) => {
 };
 // get blogs route
 export const getLatestBlogs = async (req, res) => {
-  let maxBlogs = 6;
+  const { page } = req.body;
+  let maxBlogs = 5;
   try {
     const allBlogs = await Blog.find({ draft: false })
       .populate(
@@ -90,8 +91,9 @@ export const getLatestBlogs = async (req, res) => {
       .select(
         "title banner description author blog_id tags activity publishedAt -_id"
       )
+      .skip((page - 1) * maxBlogs)
       .limit(maxBlogs);
-    return res.status(200).json({ allBlogs });
+    return res.status(200).json({ latestBlogs: allBlogs });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internale server error" });
@@ -100,7 +102,7 @@ export const getLatestBlogs = async (req, res) => {
 
 // get popular blogs route
 export const getPopularBlogs = async (req, res) => {
-  let maxBlogs = 6;
+  let maxBlogs = 5;
   try {
     const popularBlogs = await Blog.find({ draft: false })
       .populate(
@@ -147,4 +149,14 @@ export const getBlogByCategory = async (req, res) => {
     console.log(error);
     return res.status(500).json({ error: "Internale server error" });
   }
+};
+export const latestBlogsCount = async (req, res) => {
+  Blog.countDocuments({ draft: false })
+    .then((total) => {
+      return res.status(200).json({ totalDocs: total });
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({ error: "Internal server error" });
+    });
 };

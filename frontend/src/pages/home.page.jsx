@@ -5,7 +5,9 @@ import axios from "axios";
 import LoaderSpinner from "../components/loader.component";
 import BlogPost from "../components/blog-post.component";
 import NoBannerBlogPost from "../components/nobanner-blog-post.component";
-import { ChartBarStacked, FrownIcon, TrendingUpIcon } from "lucide-react";
+import { ChartBarStacked, TrendingUpIcon } from "lucide-react";
+import NoDataFoundMessage from "../components/nodata.component";
+import { formatPaginationData } from "../../libs/utils/formatPaginationData";
 
 const HomePage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -24,19 +26,23 @@ const HomePage = () => {
     "entertainment",
     "finance",
   ];
-  const getBlogs = async () => {
+  const getBlogs = async (page = 1) => {
     try {
       setIsBlogsLoading(true);
-      const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/blog/latest`
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/blog/latest`,
+        { page }
       );
+
       if (response.statusText === "OK") {
-        setIsBlogsLoading(false);
-        setBlogs(response.data.allBlogs);
+        const latestBlogs = response.data.latestBlogs || [];
+        setBlogs(latestBlogs);
+        // Update the state with the formatted data
       }
     } catch (error) {
-      setIsBlogsLoading(false);
       console.log(error.message);
+    } finally {
+      setIsBlogsLoading(false);
     }
   };
   const getPopularBlogs = async () => {
@@ -109,17 +115,14 @@ const HomePage = () => {
         >
           <>
             {!isBlogsLoading && blogs.length == 0 && (
-              <div className="flex flex-col items-center justify-center gap-8">
-                <p className="text-dark-grey text-3xl mt-12">
-                  No blogs found under this category
-                </p>
-                <FrownIcon className="text-dark-grey text-xl" size={70} />
-              </div>
+              <NoDataFoundMessage
+                message={`No blogs found under ${pageState} category`}
+              />
             )}
             {isBlogsLoading ? (
               <LoaderSpinner />
             ) : (
-              blogs.map((blog, i) => {
+              blogs?.results.map((blog, i) => {
                 return (
                   <AnimationWrapper
                     transition={{ duration: 1, delay: i * 0.1 }}
@@ -137,12 +140,12 @@ const HomePage = () => {
           </>
           <>
             {!isPopularBlogsLoading && popularBlogs.length === 0 && (
-              <p>No blogs found</p>
+              <NoDataFoundMessage message={"No trending blogs found"} />
             )}
             {isPopularBlogsLoading ? (
               <LoaderSpinner />
             ) : (
-              popularBlogs.map((blog, i) => {
+              popularBlogs?.map((blog, i) => {
                 return (
                   <AnimationWrapper
                     transition={{ duration: 1, delay: i * 0.1 }}
@@ -185,7 +188,7 @@ const HomePage = () => {
           {popularBlogs.length == 0 ? (
             <LoaderSpinner />
           ) : (
-            popularBlogs.map((blog, i) => {
+            popularBlogs?.map((blog, i) => {
               return (
                 <AnimationWrapper
                   transition={{ duration: 1, delay: i * 0.1 }}
