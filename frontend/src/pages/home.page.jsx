@@ -88,6 +88,7 @@ const HomePage = () => {
           const filteredBlogs = response.data.filteredBlogs;
           setIsBlogsLoading(false);
           setBlogs(response.data.filteredBlogs);
+          // trying to fix the issue with the infinite scroll
         }
       }
     } catch (error) {
