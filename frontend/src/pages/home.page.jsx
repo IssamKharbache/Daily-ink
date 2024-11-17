@@ -8,7 +8,6 @@ import NoBannerBlogPost from "../components/nobanner-blog-post.component";
 import { ChartBarStacked, TrendingUpIcon } from "lucide-react";
 import NoDataFoundMessage from "../components/nodata.component";
 import { formatPaginationData } from "../../libs/utils/formatPaginationData";
-import LoadMoreButton from "../components/load-more.component";
 
 const HomePage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -27,10 +26,8 @@ const HomePage = () => {
     "entertainment",
     "finance",
   ];
-  const getBlogs = async ({ page = 1 }) => {
+  const getBlogs = async (page = 1) => {
     try {
-      console.log();
-
       setIsBlogsLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/blog/latest`,
@@ -39,15 +36,8 @@ const HomePage = () => {
 
       if (response.statusText === "OK") {
         const latestBlogs = response.data.latestBlogs || [];
-        console.log(latestBlogs);
-        const formatedData = await formatPaginationData({
-          state: blogs,
-          data: latestBlogs,
-          page,
-          countRoute: "api/blog/all-latest-blogs-count",
-        });
-        setBlogs(formatedData);
-        console.log(formatedData);
+        setBlogs(latestBlogs);
+        // Update the state with the formatted data
       }
     } catch (error) {
       console.log(error.message);
@@ -86,17 +76,18 @@ const HomePage = () => {
   const filterBlogByCategory = async () => {
     try {
       if (pageState == "all" || pageState == "home") {
-        getBlogs({ page: 1 });
+        getBlogs();
       } else {
         setIsBlogsLoading(true);
-
         const response = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/blog/search`,
           { category: pageState }
         );
 
         if (response.statusText === "OK") {
-          console.log(response);
+          const filteredBlogs = response.data.filteredBlogs;
+          setIsBlogsLoading(false);
+          setBlogs(response.data.filteredBlogs);
         }
       }
     } catch (error) {
@@ -110,7 +101,7 @@ const HomePage = () => {
       getPopularBlogs();
     }
     if (pageState == "home") {
-      getBlogs({ page: 1 });
+      getBlogs();
     } else {
       filterBlogByCategory();
     }
@@ -132,8 +123,7 @@ const HomePage = () => {
             {isBlogsLoading ? (
               <LoaderSpinner />
             ) : (
-              blogs.results &&
-              blogs.results.map((blog, i) => {
+              blogs?.results.map((blog, i) => {
                 return (
                   <AnimationWrapper
                     transition={{ duration: 1, delay: i * 0.1 }}
@@ -148,7 +138,6 @@ const HomePage = () => {
                 );
               })
             )}
-            <LoadMoreButton state={blogs} getData={getBlogs} />
           </>
           <>
             {!isPopularBlogsLoading && popularBlogs.length === 0 && (
