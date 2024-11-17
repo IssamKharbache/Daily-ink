@@ -2,6 +2,7 @@ import express from "express";
 import {
   createBlog,
   getBlogByCategory,
+  getBlogByCategoryCount,
   getLatestBlogs,
   getPopularBlogs,
   latestBlogsCount,
@@ -14,5 +15,6 @@ router.post("/search", getBlogByCategory);
 router.post("/latest", getLatestBlogs);
 router.get("/popular", getPopularBlogs);
 router.post("/all-latest-blogs-count", latestBlogsCount);
+router.post("/search-count", getBlogByCategoryCount);
 
 export { router as blogRoutes };

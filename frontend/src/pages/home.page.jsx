@@ -85,8 +85,7 @@ const HomePage = () => {
         );
 
         if (response.statusText === "OK") {
-          setIsBlogsLoading(false);
-          setBlogs(response.data.filteredBlogs);
+          console.log(response);
         }
       }
     } catch (error) {

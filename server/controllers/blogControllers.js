@@ -160,3 +160,18 @@ export const latestBlogsCount = async (req, res) => {
       return res.status(500).json({ error: "Internal server error" });
     });
 };
+
+export const getBlogByCategoryCount = async (req, res) => {
+  const { category } = req.body;
+  const findQuery = {
+    tags: category,
+    draft: false,
+  };
+  try {
+    const filteredBlogs = await Blog.countDocuments(findQuery);
+    return res.status(200).json({ filteredBlogs });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internale server error" });
+  }
+};
