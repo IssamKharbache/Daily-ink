@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const navigate = useNavigate();
   //search bar states
   const [searchBarVisibility, setSearchBarVisibility] = useState(false);
+  const inputRef = useRef(null);
   const handleSearchBarVisibility = () => {
     setSearchBarVisibility(!searchBarVisibility);
+    inputRef.current.focus();
   };
   //search bar function
   const handleSearch = (e) => {
@@ -28,6 +30,7 @@ const SearchBar = () => {
         }`}
       >
         <input
+          ref={inputRef}
           onKeyDown={handleSearch}
           type="text"
           placeholder="Search..."

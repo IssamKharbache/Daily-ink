@@ -229,3 +229,30 @@ export const searchBlogsCount = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const searchUsers = async (req, res) => {
+  const { query } = req.body;
+  try {
+    const users = await User.find({
+      "personal_info.fullname": {
+        $regex: query,
+        $options: "i",
+      },
+      "personal_info.username": {
+        $regex: query,
+        $options: "i",
+      },
+    })
+      .limit(50)
+      .select(
+        "personal_info.fullname personal_info.username personal_info.profile_img -_id"
+      );
+    if (!users) {
+      return res.status(200).json({ searchedUsers: [] });
+    }
+    return res.status(200).json({ searchedUsers: users });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};

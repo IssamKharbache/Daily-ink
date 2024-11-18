@@ -8,6 +8,7 @@ import {
   latestBlogsCount,
   searchBlogs,
   searchBlogsCount,
+  searchUsers,
 } from "../controllers/blogControllers.js";
 import { verifyJWT } from "../middlewares/verifyJWT.js";
 const router = express.Router();
@@ -25,5 +26,7 @@ router.get("/popular", getPopularBlogs);
 //search blogs route
 router.post("/search", searchBlogs);
 router.post("/search-count", searchBlogsCount);
+//get user related to search
+router.post("/search-users", searchUsers);
 
 export { router as blogRoutes };

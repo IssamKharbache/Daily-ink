@@ -22,21 +22,21 @@ const UserDropDown = () => {
       <div className="bg-white absolute right-0 border border-grey w-60 overflow-hidden duration-200 rounded">
         <Link
           to="/editor"
-          className="flex  gap-2 link md:hidden pl-8 py-4 rounded-none"
+          className="flex  gap-2 link md:hidden pl-8 py-4 rounded-none "
         >
           <i className="fi fi-rr-magic-wand"></i>
           <span>Create a blog</span>
         </Link>
         <Link
           to={`/user/${username}`}
-          className="flex items-center gap-2 link pl-8 py-4 rounded-none"
+          className="flex items-center gap-2 link pl-8 py-4 rounded-none border-b border-dark-grey/10 "
         >
           <i className="fi fi-rs-user"></i>
           <span>Profile</span>
         </Link>
         <Link
           to={`dashboard/blogs`}
-          className="flex items-center gap-2 link pl-8 py-4 rounded-none"
+          className="flex items-center gap-2 link pl-8 py-4 rounded-none border-b border-dark-grey/10"
         >
           <i className="fi fi-rr-blog-text"></i>
           <span>Dashboard</span>
@@ -58,7 +58,7 @@ const UserDropDown = () => {
           <div className="flex flex-col justify-start  ">
             <span className="text-start">Logout</span>
             <p className="text-md font-bold text-dark-grey break-words line-clamp-1">
-              @issam kharbache
+              @{username}
             </p>
           </div>
         </button>
