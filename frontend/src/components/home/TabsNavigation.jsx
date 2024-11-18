@@ -19,7 +19,7 @@ const TabsNavigation = ({
                   onClick={() => setActiveTab(i)}
                   href="#"
                   className={`p-4 px-5 capitalize transition font-normal ${
-                    defaultHidden.includes(route) ? "md:hidden" : ""
+                    defaultHidden.includes(route) ? "lg:hidden" : ""
                   }
                   ${
                     activeTab === i

@@ -20,6 +20,14 @@ const SearchBar = () => {
       }
     }
   };
+  const handleSearchMobile = () => {
+    const query = inputRef.current.value;
+    if (query.length > 0) {
+      navigate(`/search/${query}`);
+      inputRef.current.value = "";
+      setSearchBarVisibility(false);
+    }
+  };
   return (
     <>
       <div
@@ -34,9 +42,17 @@ const SearchBar = () => {
           onKeyDown={handleSearch}
           type="text"
           placeholder="Search..."
-          className="relative w-full md:w-auto bg-grey p-4 pl-8 md:pl-12  md:pr-6 rounded-full placeholder:text-black/60 input pe-16"
+          className="relative w-full md:w-auto bg-grey p-4 pl-8 md:pl-12  md:pr-6 rounded-full placeholder:text-black/60 input
+          pe-24 md:pe-16"
         />
-        <i className="fi fi-rr-search absolute right-[10%] md:left-2 top-1/2 -translate-y-1/2 text-xl   md:pointer-events-none ps-3"></i>
+        <i
+          onClick={handleSearchBarVisibility}
+          className="fi fi-rr-circle-xmark absolute right-[10%]  top-1/2 -translate-y-1/2 text-xl   md:pointer-events-none ps-3 md:hidden text-red"
+        ></i>
+        <i
+          onClick={handleSearchMobile}
+          className="fi fi-rr-search absolute right-[18%] md:left-2 top-1/2 -translate-y-1/2 text-xl  md:pointer-events-none  ps-3 "
+        ></i>
       </div>
       {/* toggle search button */}
       <div className="block md:hidden">

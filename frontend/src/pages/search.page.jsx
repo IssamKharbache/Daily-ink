@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { toast } from "sonner";
 import NoDataFoundMessage from "../components/nodata.component";
 import LoaderSpinner from "../components/loader.component";
 import BlogPost from "../components/blog-post.component";
@@ -9,7 +8,6 @@ import TabsNavigation from "../components/home/TabsNavigation";
 import { formatPaginationData } from "../../libs/utils/formatPaginationData";
 import LoadMoreButton from "../components/load-more.component";
 import AnimationWrapper from "../common/page-animation";
-import User from "../../../server/Schema/User";
 import UserCard from "../components/usercard.component";
 import { User2Icon } from "lucide-react";
 

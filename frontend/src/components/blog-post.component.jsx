@@ -18,17 +18,17 @@ const BlogPost = ({ content, author }) => {
   return (
     <Link
       to={`/blogs/${id}`}
-      className="flex gap-8 items-center bg-grey/30 hover:bg-grey px-4 border-b-2 border-grey group mt-4 "
+      className="flex flex-col md:flex-row gap-8 items-center bg-grey/30 hover:bg-grey px-4 border-b-2 border-grey group mt-4 "
     >
-      <div className="h-56 object-contain aspect-square bg-grey hidden md:block">
+      <div className="h-56 object-contain aspect-square bg-grey mt-4 w-full md:mt-0 ">
         <img
           src={banner}
           alt="blog-banner"
-          className="h-full w-full aspect-square  object-cover rounded opacity-80 group-hover:opacity-100 duration-200  "
+          className="h-full w-full aspect-square  object-cover rounded opacity-90 group-hover:opacity-100 duration-200  "
         />
       </div>
       <div className="w-full  p-4   gap-4  ">
-        <h1 className="text-2xl md:text-4xl my-3 capitalize font-bold ">
+        <h1 className="text-2xl md:text-4xl my-3 capitalize font-bold line-clamp-2 ">
           {title}
         </h1>
         <p className="my-3 text-xl font-gelasio leading-7 max-sm:hidden md:max-[1100px]:hidden line-clamp-2">

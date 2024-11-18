@@ -180,7 +180,7 @@ const HomePage = () => {
         </TabsNavigation>
       </div>
       {/* filters and trending blogs */}
-      <div className="min-w-[40%] lg:min-w-[400px]  border-l border-grey pl-8 pt-3 max-md:hidden  overflow-x-auto h-screen">
+      <div className="min-w-[40%] lg:min-w-[400px]  border-l border-grey pl-8 pt-3 max-lg:hidden  overflow-x-auto h-screen">
         <div className="flex flex-col gap-10 ">
           <div>
             <h1 className="font-medium mb-8 text-2xl flex items-center gap-3">
