@@ -124,14 +124,13 @@ export const getPopularBlogs = async (req, res) => {
 };
 
 export const getBlogByCategory = async (req, res) => {
-  const { category } = req.body;
-  console.log(category);
+  const { category, page } = req.body;
 
   const findQuery = {
     tags: category,
     draft: false,
   };
-  const maxBlogs = 6;
+  const maxBlogs = 5;
   try {
     const filteredBlogs = await Blog.find(findQuery)
       .populate(
@@ -142,6 +141,7 @@ export const getBlogByCategory = async (req, res) => {
       .select(
         "title banner description author blog_id tags activity publishedAt -_id"
       )
+      .skip((page - 1) * maxBlogs)
       .limit(maxBlogs);
 
     return res.status(200).json({ filteredBlogs });
@@ -154,6 +154,19 @@ export const latestBlogsCount = async (req, res) => {
   Blog.countDocuments({ draft: false })
     .then((total) => {
       return res.status(200).json({ totalDocs: total });
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({ error: "Internal server error" });
+    });
+};
+
+export const getBlogByCategoryCount = async (req, res) => {
+  const { category } = req.body;
+  const findQuery = { tags: category, draft: false };
+  Blog.countDocuments(findQuery)
+    .then((count) => {
+      return res.status(200).json({ totalDocs: count });
     })
     .catch((error) => {
       console.log(error);

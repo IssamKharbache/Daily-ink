@@ -29,8 +29,6 @@ const HomePage = () => {
   ];
   const getBlogs = async ({ page = 1 }) => {
     try {
-      console.log();
-
       setIsBlogsLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/blog/latest`,
@@ -47,7 +45,6 @@ const HomePage = () => {
           countRoute: "api/blog/all-latest-blogs-count",
         });
         setBlogs(formatedData);
-        console.log(formatedData);
       }
     } catch (error) {
       console.log(error.message);
@@ -83,21 +80,31 @@ const HomePage = () => {
     setPageState(category);
   };
 
-  const filterBlogByCategory = async () => {
+  const filterBlogByCategory = async ({ page = 1 }) => {
     try {
       if (pageState == "all" || pageState == "home") {
         getBlogs({ page: 1 });
       } else {
         setIsBlogsLoading(true);
-
         const response = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/blog/search`,
-          { category: pageState }
+          { category: pageState, page }
         );
 
         if (response.statusText === "OK") {
+          const filteredBlogs = response.data.filteredBlogs;
+
+          const formatedData = await formatPaginationData({
+            data: filteredBlogs,
+            state: blogs,
+            page,
+            countRoute: "api/blog/search-count",
+            data_to_send: { category: pageState },
+          });
           setIsBlogsLoading(false);
-          setBlogs(response.data.filteredBlogs);
+          console.log(formatedData);
+
+          setBlogs(formatedData);
         }
       }
     } catch (error) {
@@ -113,19 +120,19 @@ const HomePage = () => {
     if (pageState == "home") {
       getBlogs({ page: 1 });
     } else {
-      filterBlogByCategory();
+      filterBlogByCategory({ page: 1 });
     }
   }, [pageState]);
   return (
     <AnimationWrapper className="h-cover flex justify-center  max-w-[1700px] mx-auto ">
       {/* latest blogs */}
-      <div className="w-full px-8 xl:px-8 overflow-y-auto h-screen ">
+      <div className="w-full px-8 xl:px-8 overflow-y-auto h-screen " id="blogs">
         <TabsNavigation
           routes={[pageState, "popular"]}
           defaultHidden={["popular"]}
         >
           <>
-            {!isBlogsLoading && blogs.length == 0 && (
+            {!isBlogsLoading && blogs.results && blogs.results.length === 0 && (
               <NoDataFoundMessage
                 message={`No blogs found under ${pageState} category`}
               />
@@ -149,7 +156,10 @@ const HomePage = () => {
                 );
               })
             )}
-            <LoadMoreButton state={blogs} getData={getBlogs} />
+            <LoadMoreButton
+              state={blogs}
+              getData={pageState === "home" ? getBlogs : filterBlogByCategory}
+            />
           </>
           <>
             {!isPopularBlogsLoading && popularBlogs.length === 0 && (
