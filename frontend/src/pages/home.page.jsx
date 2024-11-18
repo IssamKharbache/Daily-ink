@@ -17,7 +17,6 @@ const HomePage = () => {
   const [isBlogsLoading, setIsBlogsLoading] = useState(false);
   const [isPopularBlogsLoading, setIsPopularBlogsLoading] = useState(false);
   const categories = [
-    "all",
     "tech",
     "cooking",
     "travel",
@@ -27,7 +26,7 @@ const HomePage = () => {
     "entertainment",
     "finance",
   ];
-  const getBlogs = async (page = 1) => {
+  const getBlogs = async ({ page = 1 }) => {
     try {
       setIsBlogsLoading(true);
       const response = await axios.post(
@@ -81,12 +80,12 @@ const HomePage = () => {
 
   const filterBlogByCategory = async ({ page = 1 }) => {
     try {
-      if (pageState == "all" || pageState == "home") {
-        getBlogs();
+      if (pageState == "home") {
+        getBlogs({ page: 1 });
       } else {
         setIsBlogsLoading(true);
         const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/blog/search`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/blog/filter`,
           { category: pageState, page }
         );
 
@@ -96,7 +95,7 @@ const HomePage = () => {
             data: filteredBlogs,
             state: blogs,
             page,
-            countRoute: "api/blog/search-count",
+            countRoute: "api/blog/filter-count",
             data_to_send: { category: pageState },
           });
           setIsBlogsLoading(false);
@@ -115,7 +114,7 @@ const HomePage = () => {
       getPopularBlogs();
     }
     if (pageState == "home") {
-      getBlogs();
+      getBlogs({ page: 1 });
     } else {
       filterBlogByCategory({ page: 1 });
     }
@@ -156,7 +155,7 @@ const HomePage = () => {
 
             <LoadMoreButton
               state={blogs}
-              getData={pageState === "home" ? getBlogs : filterBlogByCategory}
+              getData={pageState == "home" ? getBlogs : filterBlogByCategory}
             />
           </>
           <>

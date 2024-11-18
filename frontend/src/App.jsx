@@ -7,6 +7,7 @@ import EditorPage from "./pages/editor.pages";
 import { Toaster } from "sonner";
 import EditorContextProvider from "./context/EditorContext";
 import HomePage from "./pages/home.page";
+import SearchPage from "./pages/search.page";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/" element={<NavBar />}>
             <Route index element={<HomePage />} />
+            <Route path="/search/:query" element={<SearchPage />} />
             <Route path="/sign-in" element={<LoginPage />} />
             <Route path="/sign-up" element={<SignupPage />} />
           </Route>

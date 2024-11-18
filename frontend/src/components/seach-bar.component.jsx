@@ -1,10 +1,22 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
+  const navigate = useNavigate();
   //search bar states
   const [searchBarVisibility, setSearchBarVisibility] = useState(false);
   const handleSearchBarVisibility = () => {
     setSearchBarVisibility(!searchBarVisibility);
+  };
+  //search bar function
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    if (e.keyCode === 13 && query.length > 0) {
+      if (query.length > 0) {
+        navigate(`/search/${query}`);
+        e.target.value = "";
+      }
+    }
   };
   return (
     <>
@@ -16,6 +28,7 @@ const SearchBar = () => {
         }`}
       >
         <input
+          onKeyDown={handleSearch}
           type="text"
           placeholder="Search..."
           className="relative w-full md:w-auto bg-grey p-4 pl-8 md:pl-12  md:pr-6 rounded-full placeholder:text-black/60 input pe-16"

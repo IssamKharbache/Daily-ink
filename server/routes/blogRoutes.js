@@ -6,15 +6,24 @@ import {
   getLatestBlogs,
   getPopularBlogs,
   latestBlogsCount,
+  searchBlogs,
+  searchBlogsCount,
 } from "../controllers/blogControllers.js";
 import { verifyJWT } from "../middlewares/verifyJWT.js";
 const router = express.Router();
 
+//create  blog route
 router.post("/create", verifyJWT, createBlog);
-router.post("/search", getBlogByCategory);
+//get blog by category route
+router.post("/filter", getBlogByCategory);
+router.post("/filter-count", getBlogByCategoryCount);
+//get latest blogs route
 router.post("/latest", getLatestBlogs);
-router.get("/popular", getPopularBlogs);
 router.post("/all-latest-blogs-count", latestBlogsCount);
-router.post("/search-count", getBlogByCategoryCount);
+//get popular blogs route
+router.get("/popular", getPopularBlogs);
+//search blogs route
+router.post("/search", searchBlogs);
+router.post("/search-count", searchBlogsCount);
 
 export { router as blogRoutes };

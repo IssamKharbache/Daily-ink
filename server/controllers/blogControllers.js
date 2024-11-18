@@ -130,7 +130,7 @@ export const getBlogByCategory = async (req, res) => {
     tags: category,
     draft: false,
   };
-  const maxBlogs = 1;
+  const maxBlogs = 5;
   try {
     const filteredBlogs = await Blog.find(findQuery)
       .populate(
@@ -175,4 +175,57 @@ export const getBlogByCategoryCount = async (req, res) => {
       console.log(error);
       return res.status(500).json({ error: "Internal server error" });
     });
+};
+
+export const searchBlogs = async (req, res) => {
+  const { query, page } = req.body;
+
+  const searchQuery = {
+    draft: false,
+    $or: [
+      { title: { $regex: query, $options: "i" } },
+      { description: { $regex: query, $options: "i" } },
+      { tags: { $regex: query, $options: "i" } },
+    ],
+  };
+  const limit = 5;
+  try {
+    const searchedBlogs = await Blog.find(searchQuery)
+      .sort({ publishedAt: -1 })
+      .populate(
+        "author",
+        "personal_info.profile_img personal_info.fullname personal_info.username -_id"
+      )
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .select(
+        "title banner description author blog_id tags activity publishedAt -_id"
+      );
+    if (!searchedBlogs) {
+      return res.status(200).json({ searchedBlogs: [] });
+    }
+    return res.status(200).json({ searchedBlogs });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const searchBlogsCount = async (req, res) => {
+  const { query } = req.body;
+  const searchQuery = {
+    draft: false,
+    $or: [
+      { title: { $regex: query, $options: "i" } },
+      { description: { $regex: query, $options: "i" } },
+      { tags: { $regex: query, $options: "i" } },
+    ],
+  };
+  try {
+    const searchedBlogs = await Blog.countDocuments(searchQuery);
+    return res.status(200).json({ totalDocs: searchedBlogs });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 };

@@ -18,7 +18,7 @@ const BlogPost = ({ content, author }) => {
   return (
     <Link
       to={`/blogs/${id}`}
-      className="flex gap-8 items-center hover:bg-grey/30 border-b-2 border-grey group "
+      className="flex gap-8 items-center bg-grey/30 hover:bg-grey px-4 border-b-2 border-grey group mt-4 "
     >
       <div className="h-56 object-contain aspect-square bg-grey hidden md:block">
         <img

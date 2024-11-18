@@ -1,7 +1,11 @@
 import React from "react";
 
 const LoadMoreButton = ({ state, getData }) => {
-  if (state.length != 0 && state?.results.length < state.totalDocs) {
+  if (
+    state.results &&
+    state?.results.length !== 0 &&
+    state?.results.length < state.totalDocs
+  ) {
     return (
       <button
         onClick={() => {
