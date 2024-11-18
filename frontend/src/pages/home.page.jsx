@@ -27,7 +27,7 @@ const HomePage = () => {
     "entertainment",
     "finance",
   ];
-  const getBlogs = async ({ page = 1 }) => {
+  const getBlogs = async (page = 1) => {
     try {
       setIsBlogsLoading(true);
       const response = await axios.post(
@@ -37,7 +37,6 @@ const HomePage = () => {
 
       if (response.statusText === "OK") {
         const latestBlogs = response.data.latestBlogs || [];
-        console.log(latestBlogs);
         const formatedData = await formatPaginationData({
           state: blogs,
           data: latestBlogs,
@@ -83,7 +82,7 @@ const HomePage = () => {
   const filterBlogByCategory = async ({ page = 1 }) => {
     try {
       if (pageState == "all" || pageState == "home") {
-        getBlogs({ page: 1 });
+        getBlogs();
       } else {
         setIsBlogsLoading(true);
         const response = await axios.post(
@@ -93,7 +92,6 @@ const HomePage = () => {
 
         if (response.statusText === "OK") {
           const filteredBlogs = response.data.filteredBlogs;
-
           const formatedData = await formatPaginationData({
             data: filteredBlogs,
             state: blogs,
@@ -102,7 +100,6 @@ const HomePage = () => {
             data_to_send: { category: pageState },
           });
           setIsBlogsLoading(false);
-          console.log(formatedData);
 
           setBlogs(formatedData);
         }
@@ -118,7 +115,7 @@ const HomePage = () => {
       getPopularBlogs();
     }
     if (pageState == "home") {
-      getBlogs({ page: 1 });
+      getBlogs();
     } else {
       filterBlogByCategory({ page: 1 });
     }
@@ -141,7 +138,7 @@ const HomePage = () => {
               <LoaderSpinner />
             ) : (
               blogs.results &&
-              blogs.results.map((blog, i) => {
+              blogs?.results.map((blog, i) => {
                 return (
                   <AnimationWrapper
                     transition={{ duration: 1, delay: i * 0.1 }}
@@ -156,6 +153,7 @@ const HomePage = () => {
                 );
               })
             )}
+
             <LoadMoreButton
               state={blogs}
               getData={pageState === "home" ? getBlogs : filterBlogByCategory}

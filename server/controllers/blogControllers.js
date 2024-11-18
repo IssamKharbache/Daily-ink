@@ -130,7 +130,7 @@ export const getBlogByCategory = async (req, res) => {
     tags: category,
     draft: false,
   };
-  const maxBlogs = 5;
+  const maxBlogs = 1;
   try {
     const filteredBlogs = await Blog.find(findQuery)
       .populate(
@@ -163,7 +163,10 @@ export const latestBlogsCount = async (req, res) => {
 
 export const getBlogByCategoryCount = async (req, res) => {
   const { category } = req.body;
-  const findQuery = { tags: category, draft: false };
+  const findQuery = {
+    tags: category,
+    draft: false,
+  };
   Blog.countDocuments(findQuery)
     .then((count) => {
       return res.status(200).json({ totalDocs: count });
