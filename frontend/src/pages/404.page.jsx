@@ -5,7 +5,7 @@ import logo from "../imgs/dailylogo.png";
 
 const NotFoundPage = () => {
   return (
-    <section className="flex flex-col justify-center items-center h-cover relative p-10 gap-8  max-w-[1700px] mx-auto text-dark-grey text-center ">
+    <section className="flex flex-col justify-center items-center h-[calc(96vh-80px)] relative p-10 gap-8  max-w-[1700px] mx-auto text-dark-grey text-center ">
       <FrownIcon size={150} />
       <h1 className="text-center text-2xl leading-7 md:text-4xl mt-8 font-inter ">
         404 Page not found
@@ -20,7 +20,7 @@ const NotFoundPage = () => {
         <Link to="/">
           <img
             src={logo}
-            className="w-36  object-cover block mx-auto select-none"
+            className="w-36  object-contain mx-auto select-none"
             alt="dailyink logo"
           />
         </Link>

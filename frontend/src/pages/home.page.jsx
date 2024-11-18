@@ -120,7 +120,7 @@ const HomePage = () => {
     }
   }, [pageState]);
   return (
-    <AnimationWrapper className="h-cover flex justify-center  max-w-[1700px] mx-auto ">
+    <AnimationWrapper className="h-cover flex justify-center  max-w-[1700px] mx-auto  ">
       {/* latest blogs */}
       <div className="w-full px-8 xl:px-8 overflow-y-auto h-screen " id="blogs">
         <TabsNavigation
