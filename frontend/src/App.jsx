@@ -9,6 +9,7 @@ import EditorContextProvider from "./context/EditorContext";
 import HomePage from "./pages/home.page";
 import SearchPage from "./pages/search.page";
 import NotFoundPage from "./pages/404.page";
+import UserProfilePage from "./pages/profile.page";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/search/:query" element={<SearchPage />} />
             <Route path="/sign-in" element={<LoginPage />} />
             <Route path="/sign-up" element={<SignupPage />} />
+            <Route path="/user/:id" element={<UserProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

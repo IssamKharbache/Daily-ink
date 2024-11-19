@@ -6,6 +6,7 @@ import cors from "cors";
 import admin from "firebase-admin";
 import { uploadRoute } from "./routes/uploadRoutes.js";
 import { blogRoutes } from "./routes/blogRoutes.js";
+import { userRoutes } from "./routes/userRoutes.js";
 
 //initializing modules
 dotenv.config();
@@ -41,6 +42,8 @@ app.use("/api/auth", authRoute);
 app.use("/api/images", uploadRoute);
 //blog routes
 app.use("/api/blog", blogRoutes);
+//user routes
+app.use("/api/user", userRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
