@@ -84,8 +84,6 @@ const UserProfilePage = () => {
       );
 
       if (res.statusText === "OK") {
-        console.log(res.data);
-
         setIsBlogsLoading(false);
         let formatedData = await formatPaginationData({
           state: userBlogs,
@@ -94,7 +92,8 @@ const UserProfilePage = () => {
           countRoute: "api/blog/filter-count",
           data_to_send: { author: user_id },
         });
-        formatedData.results.user_id = user_id;
+
+        formatedData.user_id = user_id;
         setUserBlogs(formatedData);
       }
     } catch (error) {
@@ -112,11 +111,10 @@ const UserProfilePage = () => {
     <Navigate to="/sign-in" />
   ) : (
     <AnimationWrapper>
-      {isProfileLoading && <LoaderSpinner />}
-
-      <section className="h-cover md:flex flex-row-reverse items-start gap-5 min-[1100px]:gap-12">
+      <section className="h-cover md:flex flex-row-reverse justify-start items-start gap-5 min-[1100px]:gap-12">
+        {isProfileLoading && <LoaderSpinner />}
         {!isProfileLoading && profile?.personal_info && (
-          <div className="flex flex-col max-md:items-center gap-5 min-w-[250px] md:pl-8">
+          <div className="md:border-l border-grey  rounded-lg flex flex-col max-md:items-center gap-5 min-w-[250px] md:w-[50%] md:pl-8 md:sticky md:top-[100px] md:py-10">
             <img
               src={profile_img}
               alt="avatar"
@@ -147,7 +145,7 @@ const UserProfilePage = () => {
           </div>
         )}
 
-        <div className="max-md:mt-12">
+        <div className="max-md:mt-12 w-full">
           <TabsNavigation routes={["Blogs", "About"]} defaultHidden={["About"]}>
             <>
               {isBlogsLoading && <LoaderSpinner />}
