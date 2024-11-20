@@ -35,7 +35,7 @@ const BlogPost = ({ content, author }) => {
           {description}
         </p>
         <div className="flex items-center gap-2 mt-7 ">
-          <span className="bg-grey/80 py-1 px-4 inline-block rounded-full text-black">
+          <span className="bg-dark-grey/10 py-1 px-4 inline-block rounded-full text-black">
             {" "}
             {tags[0]}
           </span>

@@ -9,7 +9,7 @@ const LoadMoreButton = ({ state, getData }) => {
     return (
       <button
         onClick={() => {
-          getData({ page: state.page + 1 });
+          getData({ ...props, page: state.page + 1 });
         }}
         className="btn-dark rounded-full mt-4 justify-end"
       >

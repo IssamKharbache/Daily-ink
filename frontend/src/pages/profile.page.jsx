@@ -7,6 +7,10 @@ import TabsNavigation from "../components/home/TabsNavigation";
 import { checkNumberOfBlogsandReads } from "../../libs/utils/utils";
 import { UserContext } from "../context/UserContext";
 import AboutUser from "../components/about.component";
+import { formatPaginationData } from "../../libs/utils/formatPaginationData";
+import NoDataFoundMessage from "../components/nodata.component";
+import BlogPost from "../components/blog-post.component";
+import LoadMoreButton from "../components/load-more.component";
 
 export const profileData = {
   personal_info: {
@@ -29,9 +33,10 @@ const UserProfilePage = () => {
   const {
     userAuth: { access_token, username },
   } = useContext(UserContext);
-
+  //user states
   const { id: profileId } = useParams();
   const [profile, setProfile] = useState(profileData);
+  const [userBlogs, setUserBlogs] = useState([]);
   const {
     personal_info: {
       fullname,
@@ -45,6 +50,8 @@ const UserProfilePage = () => {
     joinedAt,
   } = profile;
   const [isProfileLoading, setIsProfileLoading] = useState(true);
+  const [isBlogsLoading, setIsBlogsLoading] = useState(true);
+  //get user profile data function
   const getUserProfile = async () => {
     try {
       setIsProfileLoading(true);
@@ -54,7 +61,8 @@ const UserProfilePage = () => {
       );
       if (response.statusText === "OK") {
         setIsProfileLoading(false);
-        console.log(response.data);
+        const user = response.data;
+        getUserBlogs({ page: 1, user_id: user._id });
         setProfile(response.data);
       }
     } catch (error) {
@@ -62,7 +70,40 @@ const UserProfilePage = () => {
       console.log(error.message);
     }
   };
+  //function to get user related blogs
+  const getUserBlogs = async ({ page = 1, user_id }) => {
+    user_id = user_id == undefined ? userBlogs.user_id : user_id;
 
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/blog/filter`,
+        {
+          page,
+          author: user_id,
+        }
+      );
+
+      if (res.statusText === "OK") {
+        console.log(res.data);
+
+        setIsBlogsLoading(false);
+        let formatedData = await formatPaginationData({
+          state: userBlogs,
+          data: res.data.filteredBlogs,
+          page,
+          countRoute: "api/blog/filter-count",
+          data_to_send: { author: user_id },
+        });
+        formatedData.results.user_id = user_id;
+        setUserBlogs(formatedData);
+      }
+    } catch (error) {
+      setIsBlogsLoading(false);
+      console.log(error.message);
+    }
+  };
+
+  //use effect hook to render user profile data
   useEffect(() => {
     getUserProfile();
   }, [profileId]);
@@ -72,9 +113,10 @@ const UserProfilePage = () => {
   ) : (
     <AnimationWrapper>
       {isProfileLoading && <LoaderSpinner />}
-      {!isProfileLoading && profile?.personal_info && (
-        <section className="h-cover md:flex flex-row-reverse items-start gap-5 min-[1100px]:gap-12">
-          <div className="flex flex-col max-md:items-center gap-5 min-w-[250px]">
+
+      <section className="h-cover md:flex flex-row-reverse items-start gap-5 min-[1100px]:gap-12">
+        {!isProfileLoading && profile?.personal_info && (
+          <div className="flex flex-col max-md:items-center gap-5 min-w-[250px] md:pl-8">
             <img
               src={profile_img}
               alt="avatar"
@@ -103,9 +145,36 @@ const UserProfilePage = () => {
               className="max-md:hidden"
             />
           </div>
-          {/* <TabsNavigation></TabsNavigation> */}
-        </section>
-      )}
+        )}
+
+        <div className="max-md:mt-12">
+          <TabsNavigation routes={["Blogs", "About"]} defaultHidden={["About"]}>
+            <>
+              {isBlogsLoading && <LoaderSpinner />}
+              {userBlogs.results && userBlogs?.results.length === 0 && (
+                <NoDataFoundMessage message="No Blogs Found" />
+              )}
+              {!isBlogsLoading &&
+                userBlogs.results &&
+                userBlogs.results.length > 0 &&
+                userBlogs.results.map((blog, i) => (
+                  <BlogPost
+                    content={blog}
+                    key={i}
+                    author={blog.author.personal_info}
+                  />
+                ))}
+              <LoadMoreButton state={userBlogs} getData={getUserBlogs} />
+            </>
+            <AboutUser
+              bio={bio}
+              social_links={social_links}
+              joinedAt={joinedAt}
+              className="sticky top-0 right-0"
+            />
+          </TabsNavigation>
+        </div>
+      </section>
     </AnimationWrapper>
   );
 };

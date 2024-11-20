@@ -124,14 +124,20 @@ export const getPopularBlogs = async (req, res) => {
 };
 
 export const getBlogByCategory = async (req, res) => {
-  const { category, page } = req.body;
+  const { category, page, author } = req.body;
 
-  const findQuery = {
+  let findQuery = {
     tags: category,
     draft: false,
   };
   const maxBlogs = 5;
   try {
+    if (author) {
+      findQuery = {
+        author,
+        draft: false,
+      };
+    }
     const filteredBlogs = await Blog.find(findQuery)
       .populate(
         "author",
@@ -162,11 +168,17 @@ export const latestBlogsCount = async (req, res) => {
 };
 
 export const getBlogByCategoryCount = async (req, res) => {
-  const { category } = req.body;
-  const findQuery = {
+  const { category, author } = req.body;
+  let findQuery = {
     tags: category,
     draft: false,
   };
+  if (author) {
+    findQuery = {
+      author,
+      draft: false,
+    };
+  }
   Blog.countDocuments(findQuery)
     .then((count) => {
       return res.status(200).json({ totalDocs: count });

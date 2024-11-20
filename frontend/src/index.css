@@ -13,10 +13,12 @@
 
   html {
     @apply overflow-x-hidden;
+    overscroll-behavior: none;
   }
 
   body {
     @apply font-inter font-normal text-black;
+    overscroll-behavior: none;
   }
 
   i {
