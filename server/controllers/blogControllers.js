@@ -99,6 +99,17 @@ export const getLatestBlogs = async (req, res) => {
     return res.status(500).json({ error: "Internale server error" });
   }
 };
+//get latest blogs count function
+export const latestBlogsCount = async (req, res) => {
+  Blog.countDocuments({ draft: false })
+    .then((total) => {
+      return res.status(200).json({ totalDocs: total });
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({ error: "Internal server error" });
+    });
+};
 
 // get popular blogs route
 export const getPopularBlogs = async (req, res) => {
@@ -123,6 +134,7 @@ export const getPopularBlogs = async (req, res) => {
   }
 };
 
+// get blogs by category  function
 export const getBlogByCategory = async (req, res) => {
   const { category, page, author } = req.body;
 
@@ -156,17 +168,6 @@ export const getBlogByCategory = async (req, res) => {
     return res.status(500).json({ error: "Internale server error" });
   }
 };
-export const latestBlogsCount = async (req, res) => {
-  Blog.countDocuments({ draft: false })
-    .then((total) => {
-      return res.status(200).json({ totalDocs: total });
-    })
-    .catch((error) => {
-      console.log(error);
-      return res.status(500).json({ error: "Internal server error" });
-    });
-};
-
 export const getBlogByCategoryCount = async (req, res) => {
   const { category, author } = req.body;
   let findQuery = {
@@ -188,7 +189,7 @@ export const getBlogByCategoryCount = async (req, res) => {
       return res.status(500).json({ error: "Internal server error" });
     });
 };
-
+//search blogs function
 export const searchBlogs = async (req, res) => {
   const { query, page } = req.body;
 
@@ -222,7 +223,7 @@ export const searchBlogs = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-
+//search blogs count function
 export const searchBlogsCount = async (req, res) => {
   const { query } = req.body;
   const searchQuery = {
@@ -241,7 +242,7 @@ export const searchBlogsCount = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-
+//search users related to post function
 export const searchUsers = async (req, res) => {
   const { query } = req.body;
   try {
@@ -265,6 +266,48 @@ export const searchUsers = async (req, res) => {
     return res.status(200).json({ searchedUsers: users });
   } catch (error) {
     console.log(error.message);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//get single blog function
+export const getSingleBlog = async (req, res) => {
+  const { blogId } = req.body;
+  let incerementValue = 1;
+  try {
+    const singleBlog = await Blog.findOneAndUpdate(
+      { blog_id: blogId },
+      {
+        $inc: {
+          "activity.total_reads": incerementValue,
+        },
+      }
+    )
+      .populate(
+        "author",
+        "personal_info.profile_img personal_info.fullname personal_info.username "
+      )
+      .select(
+        "title banner description author blog_id tags activity publishedAt"
+      );
+    User.findOneAndUpdate(
+      {
+        "personal_info.username": singleBlog.author.personal_info.username,
+      },
+      {
+        $inc: {
+          "account_info.total_reads": incerementValue,
+        },
+      }
+    ).catch((err) => {
+      console.log("Error updating user total reads : ", err.message);
+
+      return res.status(500).json({ error: "Internal server error" });
+    });
+
+    return res.status(200).json({ singleBlog });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

@@ -5,6 +5,7 @@ import {
   getBlogByCategoryCount,
   getLatestBlogs,
   getPopularBlogs,
+  getSingleBlog,
   latestBlogsCount,
   searchBlogs,
   searchBlogsCount,
@@ -28,5 +29,7 @@ router.post("/search", searchBlogs);
 router.post("/search-count", searchBlogsCount);
 //get user related to search
 router.post("/search-users", searchUsers);
+//single blog route
+router.post("/get-blog", getSingleBlog);
 
 export { router as blogRoutes };
