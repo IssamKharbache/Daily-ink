@@ -12,6 +12,7 @@ export default {
       twitter: "#1DA1F2",
       purple: "#8B46FF",
       slate: "#cbd5e1",
+      blue: "#80a0e0",
     },
 
     fontSize: {

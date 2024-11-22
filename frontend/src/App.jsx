@@ -11,24 +11,27 @@ import SearchPage from "./pages/search.page";
 import NotFoundPage from "./pages/404.page";
 import UserProfilePage from "./pages/profile.page";
 import DetailedBlogPage from "./pages/blog.page";
+import BlogContextProvider from "./context/BlogContext";
 
 const App = () => {
   return (
     <UserContextProvider>
       <EditorContextProvider>
-        <Routes>
-          <Route path="/editor" element={<EditorPage />} />
-          <Route path="/" element={<NavBar />}>
-            <Route index element={<HomePage />} />
-            <Route path="/search/:query" element={<SearchPage />} />
-            <Route path="/sign-in" element={<LoginPage />} />
-            <Route path="/sign-up" element={<SignupPage />} />
-            <Route path="/user/:id" element={<UserProfilePage />} />
-            <Route path="/blog/:blogId" element={<DetailedBlogPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
-        <Toaster richColors position="top-center" />
+        <BlogContextProvider>
+          <Routes>
+            <Route path="/editor" element={<EditorPage />} />
+            <Route path="/" element={<NavBar />}>
+              <Route index element={<HomePage />} />
+              <Route path="/search/:query" element={<SearchPage />} />
+              <Route path="/sign-in" element={<LoginPage />} />
+              <Route path="/sign-up" element={<SignupPage />} />
+              <Route path="/user/:id" element={<UserProfilePage />} />
+              <Route path="/blog/:blogId" element={<DetailedBlogPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+          <Toaster richColors position="top-center" />
+        </BlogContextProvider>
       </EditorContextProvider>
     </UserContextProvider>
   );

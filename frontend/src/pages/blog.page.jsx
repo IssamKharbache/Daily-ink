@@ -6,6 +6,8 @@ import AnimationWrapper from "../common/page-animation";
 import LoaderSpinner from "../components/loader.component";
 import NoDataFoundMessage from "../components/nodata.component";
 import { formatToDate } from "../../libs/utils/utils";
+import BlogInteractions from "../components/blog-interaction.component";
+import { BlogContext } from "../context/BlogContext";
 
 export const blogStructure = {
   title: "",
@@ -15,12 +17,14 @@ export const blogStructure = {
   author: { personal_info: {} },
   banner: "",
   publishedAt: "",
+  activity: {},
 };
 
 const DetailedBlogPage = () => {
   const { blogId } = useParams();
   const [blogDetails, setBlogDetails] = useState(blogStructure);
   const [isBlogLoading, setIsBlogLoading] = useState(true);
+  const { setBlog: setBlogContext } = useContext(BlogContext);
 
   const {
     title,
@@ -45,6 +49,7 @@ const DetailedBlogPage = () => {
         setIsBlogLoading(false);
         const blog = response.data.singleBlog;
         setBlogDetails(blog);
+        setBlogContext(blog);
       }
     } catch (error) {
       setIsBlogLoading(false);
@@ -93,6 +98,7 @@ const DetailedBlogPage = () => {
             </h1>
           </div>
         </div>
+        <BlogInteractions />
       </div>
     </AnimationWrapper>
   );
