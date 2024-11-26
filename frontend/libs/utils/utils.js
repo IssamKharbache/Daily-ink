@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 export const formatToDate = (dateString) => {
   const date = new Date(dateString);
 
@@ -26,4 +28,20 @@ export const checkNumberOfBlogsandReads = (text, number) => {
       return `${number.toLocaleString()} Reads`;
     }
   }
+};
+
+export const useOutsideClick = (modalRef, setIsOpenModal) => {
+  useEffect(() => {
+    const closeHandler = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setIsOpenModal(false);
+      }
+    };
+
+    document.addEventListener("mousedown", closeHandler);
+
+    return () => {
+      document.removeEventListener("mousedown", closeHandler);
+    };
+  });
 };

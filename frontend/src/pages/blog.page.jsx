@@ -8,6 +8,7 @@ import NoDataFoundMessage from "../components/nodata.component";
 import { formatToDate } from "../../libs/utils/utils";
 import BlogInteractions from "../components/blog-interaction.component";
 import { BlogContext } from "../context/BlogContext";
+import BlogContent from "../components/blog-content.component";
 
 export const blogStructure = {
   title: "",
@@ -24,7 +25,9 @@ const DetailedBlogPage = () => {
   const { blogId } = useParams();
   const [blogDetails, setBlogDetails] = useState(blogStructure);
   const [isBlogLoading, setIsBlogLoading] = useState(true);
-  const { setBlog: setBlogContext } = useContext(BlogContext);
+  const { setBlog } = useContext(BlogContext);
+
+  const [similarBlogs, setSimilarBlogs] = useState([]);
 
   const {
     title,
@@ -46,10 +49,22 @@ const DetailedBlogPage = () => {
         }
       );
       if (response.statusText === "OK") {
+        const tag = response.data.singleBlog.tags[0];
+
+        const {
+          data: { filteredBlogs: similarBlog },
+        } = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/blog/filter`,
+          {
+            category: tag,
+            limit: 5,
+          }
+        );
+        setSimilarBlogs(similarBlog);
+
         setIsBlogLoading(false);
         const blog = response.data.singleBlog;
         setBlogDetails(blog);
-        setBlogContext(blog);
       }
     } catch (error) {
       setIsBlogLoading(false);
@@ -79,11 +94,13 @@ const DetailedBlogPage = () => {
         </div>
         <div className="flex mt-4 max-sm:flex-col justify-between">
           <div className="flex items-center gap-6 ">
-            <img
-              src={profile_img}
-              alt="user avatar"
-              className="w-12 h-12 rounded-full"
-            />
+            <Link to={`/user/${author_username}`}>
+              <img
+                src={profile_img}
+                alt="user avatar"
+                className="w-12 h-12 rounded-full"
+              />
+            </Link>
 
             <h1 className="capitalize text-2xl font-bold">
               {fullname}
@@ -97,6 +114,17 @@ const DetailedBlogPage = () => {
               </Link>
             </h1>
           </div>
+        </div>
+        <BlogInteractions />
+        {/* blog content */}
+        <div className="my-12 font-gelasio blog-page-conetnt">
+          {content[0].blocks.map((block, index) => {
+            return (
+              <div className="my-4 md:my-8" key={index}>
+                <BlogContent content={block} />
+              </div>
+            );
+          })}
         </div>
         <BlogInteractions />
       </div>
