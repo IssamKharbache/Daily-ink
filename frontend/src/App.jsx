@@ -20,6 +20,7 @@ const App = () => {
         <EditorContextProvider>
           <Routes>
             <Route path="/editor" element={<EditorPage />} />
+            <Route path="/editor/:blogId" element={<EditorPage />} />
             <Route path="/" element={<NavBar />}>
               <Route index element={<HomePage />} />
               <Route path="/search/:query" element={<SearchPage />} />

@@ -12,7 +12,9 @@ import BlogPost from "../components/blog-post.component";
 import { FrownIcon } from "lucide-react";
 import BlogContentBlock from "../components/blog-content.component";
 
-export const blogStructure = {
+import BlogContent from "../components/blog-content.component";
+
+export let blogStructure = {
   title: "",
   description: "",
   content: [],
@@ -26,7 +28,8 @@ export const blogStructure = {
 const DetailedBlogPage = () => {
   const { blogId } = useParams();
   const [blogDetails, setBlogDetails] = useState(blogStructure);
-  const [isBlogLoading, setIsBlogLoading] = useState(true);
+  const [isBlogLoading, setIsBlogLoading] = useState(false);
+
   const [similarBlogs, setSimilarBlogs] = useState([]);
 
   const {
@@ -40,9 +43,8 @@ const DetailedBlogPage = () => {
     publishedAt,
   } = blogDetails;
 
-  const { blogContext, setBlogContext } = useContext(BlogContext);
-
   const getDetailedBlog = async () => {
+    setIsBlogLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/blog/get-blog`,
@@ -51,16 +53,16 @@ const DetailedBlogPage = () => {
         }
       );
       if (response.statusText === "OK") {
-        setIsBlogLoading(false);
+        const tag = response.data.singleBlog.tags[0];
         const blog = response.data.singleBlog;
         setBlogDetails(blog);
-        setBlogContext(blog);
+        blogStructure = blog;
 
         const {
           data: { filteredBlogs: similarBlogs },
         } = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/blog/filter`,
-          { category: blog.tags[0], limit: 6, eliminateBlog: blogId }
+          { category: tag, limit: 6, eliminateBlog: blogId }
         );
         if (similarBlogs) {
           setSimilarBlogs(similarBlogs);
@@ -74,7 +76,7 @@ const DetailedBlogPage = () => {
   const resetState = () => {
     setSimilarBlogs([]);
     setBlogDetails(blogStructure);
-    setIsBlogLoading(true);
+    setIsBlogLoading(false);
   };
   useEffect(() => {
     resetState();
@@ -103,11 +105,13 @@ const DetailedBlogPage = () => {
         </div>
         <div className="flex mt-4 max-sm:flex-col justify-between">
           <div className="flex items-center gap-6 ">
-            <img
-              src={profile_img}
-              alt="user avatar"
-              className="w-12 h-12 rounded-full"
-            />
+            <Link to={`/user/${author_username}`}>
+              <img
+                src={profile_img}
+                alt="user avatar"
+                className="w-12 h-12 rounded-full"
+              />
+            </Link>
 
             <h1 className="capitalize text-2xl font-bold">
               {fullname}
@@ -123,6 +127,7 @@ const DetailedBlogPage = () => {
           </div>
         </div>
         <BlogInteractions />
+
         {/* content here */}
         <div className="my-12 font-gelasio blog-page-content">
           {content.length &&

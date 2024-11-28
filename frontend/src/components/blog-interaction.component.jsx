@@ -3,10 +3,14 @@ import { BlogContext } from "../context/BlogContext";
 
 import { Link, useLocation } from "react-router-dom";
 import ShareBlogModal from "./modals/ShareBlogModal";
-import { UserContext } from "../context/UserContext";
+
 import { Edit2 } from "lucide-react";
 
+import { useOutsideClick } from "../../libs/utils/utils";
+import { UserContext } from "../context/UserContext";
+
 const BlogInteractions = () => {
+  //blog context
   const {
     blogContext: {
       blog_id,
@@ -17,26 +21,19 @@ const BlogInteractions = () => {
     },
     setBlogContext,
   } = useContext(BlogContext);
+
   const {
     userAuth: { username },
   } = useContext(UserContext);
 
   const location = useLocation();
-
+  //modal ref and state
   const modalRef = useRef(null);
-  ///
   const [openModal, setIsOpenModal] = useState(false);
-  useEffect(() => {
-    const closeHandler = (e) => {
-      if (!modalRef.current.contains(e.target)) {
-        setIsOpenModal(false);
-      }
-    };
-    document.addEventListener("mousedown", closeHandler);
-    return () => {
-      document.removeEventListener("mousedown", closeHandler);
-    };
-  });
+
+  // custom hook to close modal when clicked outside
+
+  useOutsideClick(modalRef, setIsOpenModal);
 
   return (
     <>
@@ -71,19 +68,22 @@ const BlogInteractions = () => {
               <Edit2 size={15} />
             </Link>
           )}
-          <button
-            onClick={() => setIsOpenModal(true)}
-            className="flex items-center justify-center w-10 h-10 rounded-full  bg-grey/70 group/share  "
-          >
-            <i className="fi fi-rr-share group-hover/share:text-blue"></i>
-          </button>
-          <ShareBlogModal
-            setIsOpenModal={setIsOpenModal}
-            openModal={openModal}
-            urlToShare={`${import.meta.env.VITE_FRONTEND_URL}${
-              location.pathname
-            }`}
-          />
+
+          <>
+            <button
+              onClick={() => setIsOpenModal(true)}
+              className="flex items-center justify-center w-10 h-10 rounded-full  bg-grey/70 group/share  "
+            >
+              <i className="fi fi-rr-share group-hover/share:text-blue"></i>
+            </button>
+            <ShareBlogModal
+              setIsOpenModal={setIsOpenModal}
+              openModal={openModal}
+              urlToShare={`${import.meta.env.VITE_FRONTEND_URL}${
+                location.pathname
+              }`}
+            />
+          </>
         </div>
       </div>
       <hr className="border-grey my-4" />
