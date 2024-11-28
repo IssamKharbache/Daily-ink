@@ -7,7 +7,7 @@ import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import LoadingButton from "./loading-button.component";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PublishForm = () => {
   const [loading, setLoading] = useState(false);
@@ -21,6 +21,7 @@ const PublishForm = () => {
     blog: { banner, title, description, tags, content },
     setBlog,
   } = useContext(EditorContext);
+  const { blogId } = useParams();
   const {
     userAuth: { access_token },
   } = useContext(UserContext);
@@ -105,7 +106,8 @@ const PublishForm = () => {
 
       const response = await axios.post(
         `${backendUrl}/api/blog/create`,
-        blogData,
+        { ...blogData, id: blogId },
+
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

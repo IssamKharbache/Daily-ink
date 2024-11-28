@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import logo from "../imgs/dailylogo.png";
 import { EditorContext } from "../context/EditorContext";
 import { toast } from "sonner";
@@ -23,6 +23,7 @@ const EditorNavbar = () => {
   const navigate = useNavigate();
 
   const [isSavingToDraft, setSavingToDraft] = useState(false);
+  const { blogId } = useParams();
 
   //publish funtionc
   const handlePublish = () => {
@@ -73,9 +74,10 @@ const EditorNavbar = () => {
             description,
             draft: true,
           };
+
           const response = await axios.post(
             `${backendUrl}/api/blog/create`,
-            blogData,
+            { ...blogData, id: blogId },
             {
               headers: {
                 Authorization: `Bearer ${access_token}`,

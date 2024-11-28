@@ -3,9 +3,10 @@ import EditorNavbar from "../editor-navbar.component";
 import AnimationWrapper from "../../common/page-animation";
 import Banner from "./Banner.component";
 import { EditorContext } from "../../context/EditorContext";
-import EditorJs from "@editorjs/editorjs";
+import EditorJS from "@editorjs/editorjs";
 import { tools } from "../tools.component";
-const BlogEditor = ({ type }) => {
+import { useLocation } from "react-router-dom";
+const BlogEditor = () => {
   //blog context
   const {
     blog,
@@ -19,20 +20,18 @@ const BlogEditor = ({ type }) => {
   const [banner, setBanner] = useState(null);
   const [isBannerLoading, setisBannerLoading] = useState(false);
   const [previewBannerFile, setPreviewBannerFile] = useState(null);
-  //
+
   //create editor
   useEffect(() => {
-    if (!textEditor.isReady) {
-      setTextEditor(
-        new EditorJs({
-          holderId: "textEditor",
-          data: content,
-          placeholder: "Write your blog here...",
-          tools: tools,
-        })
-      );
-    }
-  }, []);
+    setTextEditor(
+      new EditorJS({
+        holderId: "textEditor",
+        data: Array.isArray(content) ? content[0] : content,
+        placeholder: "Write your blog here...",
+        tools: tools,
+      })
+    );
+  }, [blog]);
   //text area stuff
   const handleTitleKeyDown = (e) => {
     if (e.keyCode === 13) {

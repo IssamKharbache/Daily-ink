@@ -13,7 +13,7 @@ const NoBannerBlogPost = ({ blog, index, className }) => {
   } = blog;
   return (
     <Link
-      to={`/blogs/${id}`}
+      to={`/blog/${id}`}
       className={`flex gap-5  items-center border-b-2 border-grey group hover:bg-grey/30 ${
         className ?? ""
       } `}

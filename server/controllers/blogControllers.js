@@ -12,6 +12,7 @@ export const createBlog = async (req, res) => {
     tags,
     description,
     draft = undefined,
+    id,
   } = req.body;
   //validate the data
   if (!title.length) {
@@ -36,47 +37,71 @@ export const createBlog = async (req, res) => {
     }
   }
 
-  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
+  const lowerCaseTags = tags ? tags.map((tag) => tag.toLowerCase()) : [];
   //
   const blog_id =
+    id ||
     title
       .replace(/[^a-zA-Z0-9]/g, " ")
       .replace(/\s+/g, "-")
       .trim() + nanoid();
-
   try {
-    const blog = new Blog({
-      blog_id,
-      title,
-      banner,
-      description,
-      author: userAuthId,
-      content,
-      tags: lowerCaseTags,
-      draft: Boolean(draft),
-    });
+    if (id) {
+      console.log(draft);
 
-    const savedBlog = await blog.save();
-    if (savedBlog) {
-      let incerementValue = draft ? 0 : 1;
-      const updateUser = await User.findOneAndUpdate(
-        { _id: userAuthId },
+      await Blog.findOneAndUpdate(
+        { blog_id },
         {
-          $inc: {
-            "account_info.total_posts": incerementValue,
-          },
-          $push: {
-            blogs: savedBlog._id,
-          },
+          title,
+          banner,
+          description,
+          content,
+          tags: lowerCaseTags,
+          draft: draft ? draft : false,
         }
-      );
-      return res.status(200).json({ id: savedBlog.blog_id });
+      )
+        .then(() => {
+          res.status(200).json({ id: blog_id });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+          console.log(err);
+        });
+    } else {
+      const blog = new Blog({
+        blog_id,
+        title,
+        banner,
+        description,
+        author: userAuthId,
+        content,
+        tags: lowerCaseTags,
+        draft: Boolean(draft),
+      });
+
+      const savedBlog = await blog.save();
+      if (savedBlog) {
+        let incerementValue = draft ? 0 : 1;
+        const updateUser = await User.findOneAndUpdate(
+          { _id: userAuthId },
+          {
+            $inc: {
+              "account_info.total_posts": incerementValue,
+            },
+            $push: {
+              blogs: savedBlog._id,
+            },
+          }
+        );
+        return res.status(200).json({ id: savedBlog.blog_id });
+      }
     }
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internale error" });
   }
 };
+
 // get blogs route
 export const getLatestBlogs = async (req, res) => {
   const { page } = req.body;
@@ -278,8 +303,8 @@ export const searchUsers = async (req, res) => {
 
 //get single blog function
 export const getSingleBlog = async (req, res) => {
-  const { blogId } = req.body;
-  let incerementValue = 1;
+  const { blogId, mode, draft } = req.body;
+  let incerementValue = mode !== "edit" ? 1 : 0;
   try {
     const singleBlog = await Blog.findOneAndUpdate(
       { blog_id: blogId },
@@ -310,6 +335,9 @@ export const getSingleBlog = async (req, res) => {
 
       return res.status(500).json({ error: "Internal server error" });
     });
+    if (singleBlog.draft && !draft) {
+      return res.status(500).json({ error: "You cannot access draft blog" });
+    }
 
     return res.status(200).json({ singleBlog });
   } catch (error) {

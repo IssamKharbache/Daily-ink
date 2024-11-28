@@ -32,7 +32,7 @@ const BlogContentBlock = ({ block }) => {
   if (type === "list") {
     return <List style={data.style} items={data.items} />;
   } else {
-    return <h1>This is a blog</h1>;
+    return <h1>Unknown block type</h1>;
   }
 };
 
@@ -50,14 +50,15 @@ const Img = ({ url, caption }) => {
 const Blogquote = ({ quote, caption }) => {
   return (
     <div className="bg-black/10 p-3 pl-5  border-l-4 border-black">
-      <p className="text-xl leading-10 md:text-2xl ">{quote}</p>
+      <p
+        className="text-xl leading-10 md:text-2xl"
+        dangerouslySetInnerHTML={{ __html: quote }}
+      ></p>
       {caption && (
         <p
           dangerouslySetInnerHTML={{ __html: caption }}
           className="w-full text-purple text-base"
-        >
-          {caption}
-        </p>
+        ></p>
       )}
     </div>
   );

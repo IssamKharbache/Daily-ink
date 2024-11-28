@@ -5,11 +5,13 @@ import { useContext, useState } from "react";
 
 import UserDropDown from "./user-navigation.component";
 import { UserContext } from "../context/UserContext";
+import { EditorContext } from "../context/EditorContext";
 const Navbar = () => {
   const {
     userAuth: { access_token, profile_img },
   } = useContext(UserContext);
 
+  const { setBlog } = useContext(EditorContext);
   //dropdown state
 
   const [showDropDown, setShowDropDown] = useState(false);
@@ -33,7 +35,11 @@ const Navbar = () => {
         <SearchBar />
         {/* menu */}
         <div className="flex gap-4 items-center">
-          <Link to="/editor" className="hidden md:flex gap-2 link">
+          <Link
+            onClick={() => setBlog({ title: "", banner: "", content: "" })}
+            to="/editor"
+            className="flex items-center gap-4    px-7  py-2 hover:bg-grey  rounded-full text-center "
+          >
             <i className="fi fi-tr-file-edit"></i>
             <p>Create your blog</p>
           </Link>

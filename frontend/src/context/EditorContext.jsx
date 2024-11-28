@@ -10,9 +10,10 @@ const EditorContextProvider = ({ children }) => {
     tags: [],
     description: "",
   };
+  const textEditorStructure = { isReady: false };
   const [blog, setBlog] = useState(blogStructure);
   const [editor, setEditor] = useState("editor");
-  const [textEditor, setTextEditor] = useState({ isReady: false });
+  const [textEditor, setTextEditor] = useState(textEditorStructure);
 
   return (
     <EditorContext.Provider
