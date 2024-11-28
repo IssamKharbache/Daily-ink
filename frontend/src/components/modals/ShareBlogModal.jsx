@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -7,8 +7,6 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
-
-import { useRef } from "react";
 
 const ShareBlogModal = ({ urlToShare, setIsOpenModal, openModal }) => {
   const [isCopied, setIsCopied] = useState(false);

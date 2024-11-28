@@ -1,21 +1,26 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { BlogContext } from "../context/BlogContext";
-import { FcLike } from "react-icons/fc";
-import { FacebookShareButton, FacebookIcon } from "react-share";
-import { useLocation } from "react-router-dom";
+
+import { Link, useLocation } from "react-router-dom";
 import ShareBlogModal from "./modals/ShareBlogModal";
+import { UserContext } from "../context/UserContext";
+import { Edit2 } from "lucide-react";
 
 const BlogInteractions = () => {
   const {
-    blog: {
+    blogContext: {
       blog_id,
       activity: { total_likes, total_comments },
       author: {
         personal_info: { username: author_username },
       },
     },
-    setBlog,
+    setBlogContext,
   } = useContext(BlogContext);
+  const {
+    userAuth: { username },
+  } = useContext(UserContext);
+
   const location = useLocation();
 
   const modalRef = useRef(null);
@@ -57,11 +62,20 @@ const BlogInteractions = () => {
         </div>
         {/*  */}
         <div ref={modalRef} className="flex gap-6 items-center ">
+          {username === author_username && (
+            <Link
+              to={`/editor/${blog_id}`}
+              className="flex items-center gap-4    px-7 rounded py-1 border-dark-grey hover:bg-grey :text-white border  group/share  "
+            >
+              Edit
+              <Edit2 size={15} />
+            </Link>
+          )}
           <button
             onClick={() => setIsOpenModal(true)}
             className="flex items-center justify-center w-10 h-10 rounded-full  bg-grey/70 group/share  "
           >
-            <i class="fi fi-rr-share group-hover/share:text-blue"></i>
+            <i className="fi fi-rr-share group-hover/share:text-blue"></i>
           </button>
           <ShareBlogModal
             setIsOpenModal={setIsOpenModal}

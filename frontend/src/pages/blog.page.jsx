@@ -8,6 +8,9 @@ import NoDataFoundMessage from "../components/nodata.component";
 import { formatToDate } from "../../libs/utils/utils";
 import BlogInteractions from "../components/blog-interaction.component";
 import { BlogContext } from "../context/BlogContext";
+import BlogPost from "../components/blog-post.component";
+import { FrownIcon } from "lucide-react";
+import BlogContentBlock from "../components/blog-content.component";
 
 export const blogStructure = {
   title: "",
@@ -24,7 +27,7 @@ const DetailedBlogPage = () => {
   const { blogId } = useParams();
   const [blogDetails, setBlogDetails] = useState(blogStructure);
   const [isBlogLoading, setIsBlogLoading] = useState(true);
-  const { setBlog: setBlogContext } = useContext(BlogContext);
+  const [similarBlogs, setSimilarBlogs] = useState([]);
 
   const {
     title,
@@ -36,6 +39,8 @@ const DetailedBlogPage = () => {
     },
     publishedAt,
   } = blogDetails;
+
+  const { blogContext, setBlogContext } = useContext(BlogContext);
 
   const getDetailedBlog = async () => {
     try {
@@ -50,14 +55,33 @@ const DetailedBlogPage = () => {
         const blog = response.data.singleBlog;
         setBlogDetails(blog);
         setBlogContext(blog);
+
+        const {
+          data: { filteredBlogs: similarBlogs },
+        } = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/blog/filter`,
+          { category: blog.tags[0], limit: 6, eliminateBlog: blogId }
+        );
+        if (similarBlogs) {
+          setSimilarBlogs(similarBlogs);
+        }
       }
     } catch (error) {
       setIsBlogLoading(false);
       console.log(error.message);
     }
   };
+  const resetState = () => {
+    setSimilarBlogs([]);
+    setBlogDetails(blogStructure);
+    setIsBlogLoading(true);
+  };
   useEffect(() => {
+    resetState();
     getDetailedBlog();
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }, [blogId]);
 
   return (
@@ -99,6 +123,45 @@ const DetailedBlogPage = () => {
           </div>
         </div>
         <BlogInteractions />
+        {/* content here */}
+        <div className="my-12 font-gelasio blog-page-content">
+          {content.length &&
+            content[0].blocks.map((block, i) => {
+              return (
+                <div className="my-4 md:my-8" key={i}>
+                  <BlogContentBlock block={block} />
+                </div>
+              );
+            })}
+        </div>
+        <BlogInteractions />
+
+        {similarBlogs && similarBlogs.length > 0 ? (
+          <>
+            <h1 className="text-2xl md:text-4xl mt-14 mb-10 font-medium">
+              Similar Blogs
+            </h1>
+            {similarBlogs.map((blog, id) => {
+              const {
+                author: { personal_info },
+              } = blog;
+              return (
+                <AnimationWrapper
+                  key={id}
+                  className="mt-4"
+                  transition={{ duration: 1, delay: id * 0.08 }}
+                >
+                  <BlogPost content={blog} author={personal_info} />
+                </AnimationWrapper>
+              );
+            })}
+          </>
+        ) : (
+          <h1 className="flex flex-col gap-4 justify-center items-center text-2xl md:text-4xl mt-14 mb-10 font-medium text-center text-dark-grey bg-grey rounded py-4">
+            <FrownIcon size={70} />
+            No similar blogs found
+          </h1>
+        )}
       </div>
     </AnimationWrapper>
   );

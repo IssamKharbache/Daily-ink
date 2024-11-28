@@ -4,9 +4,10 @@ import { blogStructure } from "../pages/blog.page";
 export const BlogContext = createContext({});
 
 const BlogContextProvider = ({ children }) => {
-  const [blog, setBlog] = useState(blogStructure);
+  const [blogContext, setBlogContext] = useState(blogStructure);
+
   return (
-    <BlogContext.Provider value={{ blog, setBlog }}>
+    <BlogContext.Provider value={{ blogContext, setBlogContext }}>
       {children}
     </BlogContext.Provider>
   );

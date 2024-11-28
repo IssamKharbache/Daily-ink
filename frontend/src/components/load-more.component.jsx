@@ -7,8 +7,13 @@ const LoadMoreButton = ({ state, getData }) => {
     state?.results.length < state.totalDocs
   ) {
     const updateState = () => {
-      console.log(state.user_id);
       getData({ page: state.page + 1 }); //
+      if (typeof window !== "undefined") {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
     };
 
     return (

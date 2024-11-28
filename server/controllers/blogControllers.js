@@ -136,18 +136,24 @@ export const getPopularBlogs = async (req, res) => {
 
 // get blogs by category  function
 export const getBlogByCategory = async (req, res) => {
-  const { category, page, author } = req.body;
+  const { category, page, author, limit, eliminateBlog } = req.body;
 
   let findQuery = {
     tags: category,
     draft: false,
   };
-  const maxBlogs = 5;
+  const maxBlogs = limit ?? 5;
   try {
     if (author) {
       findQuery = {
         author,
         draft: false,
+      };
+    }
+    if (eliminateBlog) {
+      findQuery = {
+        ...findQuery,
+        blog_id: { $ne: eliminateBlog },
       };
     }
     const filteredBlogs = await Blog.find(findQuery)
@@ -157,7 +163,7 @@ export const getBlogByCategory = async (req, res) => {
       )
       .sort({ publishedAt: -1 })
       .select(
-        "title banner description author blog_id tags activity publishedAt -_id"
+        "title banner description author blog_id tags  activity publishedAt -_id"
       )
       .skip((page - 1) * maxBlogs)
       .limit(maxBlogs);
@@ -288,7 +294,7 @@ export const getSingleBlog = async (req, res) => {
         "personal_info.profile_img personal_info.fullname personal_info.username "
       )
       .select(
-        "title banner description author blog_id tags activity publishedAt"
+        "title banner description content author blog_id tags activity publishedAt"
       );
     User.findOneAndUpdate(
       {

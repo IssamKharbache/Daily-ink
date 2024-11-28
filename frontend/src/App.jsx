@@ -15,9 +15,9 @@ import BlogContextProvider from "./context/BlogContext";
 
 const App = () => {
   return (
-    <UserContextProvider>
-      <EditorContextProvider>
-        <BlogContextProvider>
+    <BlogContextProvider>
+      <UserContextProvider>
+        <EditorContextProvider>
           <Routes>
             <Route path="/editor" element={<EditorPage />} />
             <Route path="/" element={<NavBar />}>
@@ -31,9 +31,9 @@ const App = () => {
             </Route>
           </Routes>
           <Toaster richColors position="top-center" />
-        </BlogContextProvider>
-      </EditorContextProvider>
-    </UserContextProvider>
+        </EditorContextProvider>
+      </UserContextProvider>
+    </BlogContextProvider>
   );
 };
 
