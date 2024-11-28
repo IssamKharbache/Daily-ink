@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
+
 import axios from "axios";
 import AnimationWrapper from "../common/page-animation";
 import LoaderSpinner from "../components/loader.component";
@@ -12,9 +12,8 @@ import BlogPost from "../components/blog-post.component";
 import { FrownIcon } from "lucide-react";
 import BlogContentBlock from "../components/blog-content.component";
 
-import BlogContent from "../components/blog-content.component";
-
-export let blogStructure = {
+export const blogStructure = {
+  _id: "",
   title: "",
   description: "",
   content: [],
@@ -23,6 +22,7 @@ export let blogStructure = {
   banner: "",
   publishedAt: "",
   activity: {},
+  blog_id: "",
 };
 
 const DetailedBlogPage = () => {
@@ -42,6 +42,7 @@ const DetailedBlogPage = () => {
     },
     publishedAt,
   } = blogDetails;
+  const { singleBlog, setSingleBlog } = useContext(BlogContext);
 
   const getDetailedBlog = async () => {
     setIsBlogLoading(true);
@@ -53,11 +54,15 @@ const DetailedBlogPage = () => {
         }
       );
       if (response.statusText === "OK") {
+        setIsBlogLoading(false);
         const tag = response.data.singleBlog.tags[0];
         const blog = response.data.singleBlog;
-        setBlogDetails(blog);
-        blogStructure = blog;
 
+        setBlogDetails(blog);
+
+        if (blog != undefined) {
+          setSingleBlog(blog);
+        }
         const {
           data: { filteredBlogs: similarBlogs },
         } = await axios.post(

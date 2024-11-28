@@ -12,14 +12,13 @@ import { UserContext } from "../context/UserContext";
 const BlogInteractions = () => {
   //blog context
   const {
-    blogContext: {
+    singleBlog: {
       blog_id,
       activity: { total_likes, total_comments },
       author: {
         personal_info: { username: author_username },
       },
     },
-    setBlogContext,
   } = useContext(BlogContext);
 
   const {
